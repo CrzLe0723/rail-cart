@@ -20,6 +20,8 @@ namespace railCart {
     let rawVelocityOverride = false
     let startTime = 0
     let estimatedDuration = 0
+    let trailLoopEnabled = false
+    let effectColor: number = 0
     // --- Easing options ---
     export enum EasingType {
         //% block="Sine"
@@ -148,45 +150,6 @@ namespace railCart {
     }
 
     /**
-     * Adds another sprite to ride the cart.
-     */
-    //% block="add passenger %p"
-    //% group="Ride"
-    //% blockId=railcart_add_passenger
-    export function addPassenger(p: Sprite) {
-        passengers.push(p)
-    }
-
-    /**
-     * Returns true if there are passengers on the cart
-     */
-    //% block="cart has passengers"
-    //% group="Ride"
-    //% blockId=railcart_has_passengers
-    export function hasPassengers(): boolean {
-        return passengers.length > 0
-    }
-
-    /**
-     * Get the passenger count
-     */
-    //% block="number of passengers on cart"
-    //% group="Ride"
-    //% blockId=railcart_passenger_count
-    export function passengerCount(): number {
-        return passengers.length
-    }
-    
-    /**
-     * Clear all passengers 
-     */
-    //% block="remove all passengers"
-    //% group="Ride"
-    //% blockId=railcart_clear_passengers
-    export function clearPassengers() {
-        passengers = []
-    }
-    /**
      * Temporarily stops the cart mid-ride.
      */
     //% block="pause ride"
@@ -269,6 +232,49 @@ namespace railCart {
     //% blockId=railcart_on_progress
     export function onRideProgress(percent: number, handler: () => void) {
         progressEvents.push({ percent, handler, triggered: false })
+    }
+
+    /**
+ * Run code when a passenger is added
+ */
+    //% block="on passenger added %handler"
+    //% group="Events"
+    //% blockId=railcart_on_passenger_added
+    //% handler.shadow="procedures_callnoreturn"
+    export function onPassengerAdded(handler: () => void) {
+        passengerAddedHandler = handler
+    }
+    let passengerAddedHandler: () => void = null
+
+    /**
+     * Run code when the cart is paused
+     */
+    //% block="on cart paused %handler"
+    //% group="Events"
+    //% blockId=railcart_on_pause
+    //% handler.shadow="procedures_callnoreturn"
+    export function onCartPaused(handler: () => void) { pauseHandler = handler }
+    let pauseHandler: () => void = null
+
+    /**
+     * Run code when the cart is resumed
+     */
+    //% block="on cart resumed %handler"
+    //% group="Events"
+    //% blockId=railcart_on_resume
+    //% handler.shadow="procedures_callnoreturn"
+    export function onCartResumed(handler: () => void) { resumeHandler = handler }
+    let resumeHandler: () => void = null
+
+    /**
+     * Run code when cart reaches midpoint (50%)
+     */
+    //% block="on cart midpoint reached %handler"
+    //% group="Events"
+    //% blockId=railcart_on_midpoint
+    //% handler.shadow="procedures_callnoreturn"
+    export function onCartMidpoint(handler: () => void) {
+        onRideProgress(50, handler)
     }
 
     // --- Helper ---
@@ -405,6 +411,26 @@ namespace railCart {
         effects.clearParticles(cart)
     }
 
+    /**
+     * Set trail effect color (for Dust/Sparks/Steam)
+     */
+    //% block="set trail effect color $color"
+    //% group="Effects"
+    //% blockId=railcart_trail_color
+    export function setTrailColor(color: number) {
+        effectColor = color
+    }
+
+    /**
+     * Make the trail effect loop continuously
+     */
+    //% block="loop trail effect $enabled"
+    //% group="Effects"
+    //% blockId=railcart_loop_effect
+    export function loopTrailEffect(enabled: boolean) {
+        trailLoopEnabled = enabled
+    }
+    
     // --- Utilities Blocks ---
     /**
      * Gets the cart's current speed
@@ -491,6 +517,65 @@ namespace railCart {
         const elapsed = game.runtime() - startTime
         return Math.max(estimatedDuration - elapsed, 0)
     }
+
+    // --- Direction Blocks ---
+
+    /**
+     * Set the cart's movement direction explicitly
+     */
+    //% block="set cart direction to $dir"
+    //% group="Utilities"
+    //% blockId=railcart_set_direction
+    export function setDirection(dir: CartDirection) {
+        if (!activeCart) return
+        if (dir === CartDirection.Forward) {
+            [start, end] = [start, end] // normal
+        } else {
+            [start, end] = [end, start] // reverse
+        }
+    }
+
+    /**
+     * Returns the current cart direction
+     */
+    //% block="cart direction"
+    //% group="Utilities"
+    //% blockId=railcart_get_direction
+    export function getDirection(): CartDirection {
+        if (!activeCart) return CartDirection.Forward
+        return start === start ? CartDirection.Forward : CartDirection.Backward
+    }
+
+    // --- Speed Helpers ---
+
+    /**
+     * Get the cart's base speed
+     */
+    //% block="cart base speed"
+    //% group="Utilities"
+    //% blockId=railcart_get_base_speed
+    export function getBaseSpeed(): number { return baseSpeed }
+
+    /**
+     * Get the cart's boost speed
+     */
+    //% block="cart boost speed"
+    //% group="Utilities"
+    //% blockId=railcart_get_boost_speed
+    export function getBoostSpeed(): number { return boostSpeed }
+
+    /**
+     * Temporarily boost the cart speed for a duration
+     */
+    //% block="boost cart by $amount for $duration ms"
+    //% group="Utilities"
+    //% blockId=railcart_temp_boost
+    export function temporaryBoost(amount: number, duration: number) {
+        baseSpeed += amount
+        pause(duration)
+        baseSpeed -= amount
+    }
+
     // --- Advanced Blocks ---
     /**
         * Force the cart to move at a raw velocity, bypassing easing.
@@ -599,5 +684,95 @@ namespace railCart {
     //% blockId=railcart_is_override
     export function isRawOverride(): boolean {
         return rawVelocityOverride
+    }
+
+    /**
+     * Get the active cart sprite
+     */
+    //% block="active cart sprite"
+    //% group="Advanced"
+    //% blockId=railcart_get_active_sprite
+    export function getActiveCart(): Sprite {
+        return activeCart
+    }
+
+    /**
+     * Cancel a specific progress event
+     */
+    //% block="cancel progress event at %percent %"
+    //% group="Advanced"
+    //% blockId=railcart_cancel_progress
+    export function cancelProgressEvent(percent: number) {
+        progressEvents = progressEvents.filter(e => e.percent !== percent)
+    }
+    // --- Passenger Blocks ---
+    /**
+     * Adds another sprite to ride the cart.
+     */
+    //% block="add passenger %p"
+    //% group="Ride"
+    //% blockId=railcart_add_passenger
+    export function addPassenger(p: Sprite) {
+        passengers.push(p)
+    }
+
+    /**
+     * Returns true if there are passengers on the cart
+     */
+    //% block="cart has passengers"
+    //% group="Ride"
+    //% blockId=railcart_has_passengers
+    export function hasPassengers(): boolean {
+        return passengers.length > 0
+    }
+
+    /**
+     * Get the passenger count
+     */
+    //% block="number of passengers on cart"
+    //% group="Ride"
+    //% blockId=railcart_passenger_count
+    export function passengerCount(): number {
+        return passengers.length
+    }
+
+    /**
+     * Clear all passengers 
+     */
+    //% block="remove all passengers"
+    //% group="Ride"
+    //% blockId=railcart_clear_passengers
+    export function clearPassengers() {
+        passengers = []
+    }
+
+    /**
+     * Detach a passenger from the cart
+    */
+    //% block="detach passenger %p"
+    //% group="Passengers"
+    //% blockId=railcart_detach_passenger
+    export function detachPassenger(p: Sprite) {
+        passengers = passengers.filter(ps => ps !== p)
+    }
+
+    /**
+     * Teleport a passenger separately
+    */
+    //% block="teleport passenger %p to x $x y $y"
+    //% group="Passengers"
+    //% blockId=railcart_teleport_passenger
+    export function teleportPassenger(p: Sprite, x: number, y: number) {
+        p.setPosition(x, y)
+    }
+
+    /**
+     * Check if a specific sprite is on the cart
+    */
+    //% block="is %p on the cart"
+    //% group="Passengers"
+    //% blockId=railcart_is_on_cart
+    export function isOnCart(p: Sprite): boolean {
+        return passengers.indexOf(p) !== -1
     }
 }
