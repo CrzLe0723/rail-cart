@@ -49,6 +49,13 @@ namespace railCart {
         Sparks
     }
 
+    // --- Direction Options ---
+    export enum CartDirection {
+        //% block="forward"
+        Forward,
+        //% block="backward"
+        Backward
+    }
     // --- Setup Blocks ---
 
     /**
@@ -149,7 +156,15 @@ namespace railCart {
     export function addPassenger(p: Sprite) {
         passengers.push(p)
     }
-
+    /**
+     * Returns true if there are passengers on the cart
+     */
+    //% block="cart has passengers"
+    //% group="Ride"
+    //% blockId=railcart_has_passengers
+    export function hasPassengers(): boolean {
+        return passengers.length > 0
+    }
     /**
      * Temporarily stops the cart mid-ride.
      */
@@ -174,6 +189,15 @@ namespace railCart {
     //% blockId=railcart_stop_ride
     export function stopRide() { active = false }
 
+    /**
+     * Returns true if the ride has finished
+     */
+    //% block="has cart ride finished"
+    //% group="Ride"
+    //% blockId=railcart_has_finished
+    export function hasRideFinished(): boolean {
+        return !active
+    }
 
     /**
      * Change the destination to another location
@@ -367,7 +391,15 @@ namespace railCart {
     //% group="Utilities"
     //% blockId=railcart_reverse
     export function reverseCart() { [start, end] = [end, start] }
-
+    /**
+     * Get the cart's position
+     */
+    //% block="cart position"
+    //% group="Utilities"
+    //% blockId=railcart_get_position
+    export function cartPosition(): { x: number, y: number } {
+        return { x: cart.x, y: cart.y }
+    }
     /**
      * Gets the progress of the current rail ride in percent
     */
@@ -460,6 +492,18 @@ namespace railCart {
     //% blockId=railcart_enable_easing
     export function enableEasing() {
         easingEnabled = true
+    }
+
+    /**
+     * Returns true if easing is enabled
+     */
+    //% block="is cart easing enabled"
+    //% advanced=true
+    //% group="Advanced"
+    //% weight=50
+    //% blockId=railcart_is_easing
+    export function isEasingEnabled(): boolean {
+        return easingEnabled
     }
     /**
         * Immediately finish the current rail ride.
