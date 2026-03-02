@@ -280,6 +280,7 @@ namespace railCart {
      */
     //% block="shake cart for %duration ms"
     //% group="Effects"
+    //% duration.defl=500
     export function shakeCart(duration: number) {
         const originalX = cart.x
         const originalY = cart.y
