@@ -712,7 +712,7 @@ namespace railCart {
      * Adds another sprite to ride the cart.
      */
     //% block="add passenger %p"
-    //% group="Ride"
+    //% group="Passengers"
     //% blockId=railcart_add_passenger
     export function addPassenger(p: Sprite) {
         passengers.push(p)
@@ -722,7 +722,7 @@ namespace railCart {
      * Returns true if there are passengers on the cart
      */
     //% block="cart has passengers"
-    //% group="Ride"
+    //% group="Passengers"
     //% blockId=railcart_has_passengers
     export function hasPassengers(): boolean {
         return passengers.length > 0
@@ -732,7 +732,7 @@ namespace railCart {
      * Get the passenger count
      */
     //% block="number of passengers on cart"
-    //% group="Ride"
+    //% group="Passengers"
     //% blockId=railcart_passenger_count
     export function passengerCount(): number {
         return passengers.length
@@ -742,7 +742,7 @@ namespace railCart {
      * Clear all passengers 
      */
     //% block="remove all passengers"
-    //% group="Ride"
+    //% group="Passengers"
     //% blockId=railcart_clear_passengers
     export function clearPassengers() {
         passengers = []
