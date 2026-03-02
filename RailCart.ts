@@ -691,6 +691,7 @@ namespace railCart {
      */
     //% block="active cart sprite"
     //% group="Advanced"
+    //% advanced=true
     //% blockId=railcart_get_active_sprite
     export function getActiveCart(): Sprite {
         return activeCart
@@ -701,6 +702,7 @@ namespace railCart {
      */
     //% block="cancel progress event at %percent %"
     //% group="Advanced"
+    //% advanced=true
     //% blockId=railcart_cancel_progress
     export function cancelProgressEvent(percent: number) {
         progressEvents = progressEvents.filter(e => e.percent !== percent)
