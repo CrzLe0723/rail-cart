@@ -156,6 +156,7 @@ namespace railCart {
     export function addPassenger(p: Sprite) {
         passengers.push(p)
     }
+
     /**
      * Returns true if there are passengers on the cart
      */
@@ -164,6 +165,26 @@ namespace railCart {
     //% blockId=railcart_has_passengers
     export function hasPassengers(): boolean {
         return passengers.length > 0
+    }
+
+    /**
+     * Get the passenger count
+     */
+    //% block="number of passengers on cart"
+    //% group="Ride"
+    //% blockId=railcart_passenger_count
+    export function passengerCount(): number {
+        return passengers.length
+    }
+    
+    /**
+     * Clear all passengers 
+     */
+    //% block="remove all passengers"
+    //% group="Ride"
+    //% blockId=railcart_clear_passengers
+    export function clearPassengers() {
+        passengers = []
     }
     /**
      * Temporarily stops the cart mid-ride.
@@ -199,6 +220,15 @@ namespace railCart {
         return !active
     }
 
+    /**
+     * Returns true if the ride is paused
+     */
+    //% block="is cart paused"
+    //% group="Ride"
+    //% blockId=railcart_is_paused
+    export function isPaused(): boolean {
+        return !active && player != null
+    }
     /**
      * Change the destination to another location
      */
@@ -399,6 +429,29 @@ namespace railCart {
     //% blockId=railcart_get_position
     export function cartPosition(): { x: number, y: number } {
         return { x: cart.x, y: cart.y }
+    }
+
+    /**
+     * Get the tile the cart is on
+     */
+    //% block="cart is on tile"
+    //% group="Utilities"
+    //% blockId=railcart_get_tile
+    export function getCartTile(): tiles.Location {
+        return tiles.getTileLocation(Math.floor(cart.x / 16), Math.floor(cart.y / 16))
+    }
+
+    /**
+     * Get the distance to the destination
+     */
+    //% block="distance to ride destination"
+    //% group="Utilities"
+    //% blockId=railcart_distance_to_end
+    export function distanceToDestination(): number {
+        if (!cart || !end) return 0
+        let dx = tileCenter(end).x - cart.x
+        let dy = tileCenter(end).y - cart.y
+        return Math.sqrt(dx * dx + dy * dy)
     }
     /**
      * Gets the progress of the current rail ride in percent
