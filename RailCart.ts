@@ -89,7 +89,7 @@ namespace railCart {
      */
     //% block="set cart sound %sound"
     //% group="Setup"
-    //% sound.defl=music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.UntilDone)
+    //% sound.defl=music.baDing
     export function setCartSound(sound: music.Playable) {
         music.play(sound, music.PlaybackMode.InBackground)
     }
