@@ -61,7 +61,6 @@ namespace railCart {
     //% block="set cart base speed $speed boost $boost"
     //% group="Setup"
     //% speed.defl=0.8 boost.defl=5.5
-
     export function setSpeed(speed: number, boost: number) {
         baseSpeed = speed
         boostSpeed = boost
@@ -90,6 +89,7 @@ namespace railCart {
      */
     //% block="set cart sound %sound"
     //% group="Setup"
+    //% sound.defl=music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.UntilDone)
     export function setCartSound(sound: music.Playable) {
         music.play(sound, music.PlaybackMode.InBackground)
     }
@@ -205,6 +205,7 @@ namespace railCart {
      */
     //% block="on ride progress %percent %handler"
     //% group="Events"
+    //% percent.defl=50
     export function onRideProgress(percent: number, handler: () => void) {
         progressEvents.push({ percent, handler, triggered: false })
     }
