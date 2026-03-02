@@ -78,6 +78,7 @@ namespace railCart {
      */
     //% block="Is cart currently moving"
     //% group="Setup"
+    //% blockId=railcart_is_active
     export function isActive(): boolean {
         return active
     }
@@ -87,6 +88,7 @@ namespace railCart {
      */
     //% block="set cart sound %sound"
     //% group="Setup"
+    //% blockId=railcart_set_sound
     export function setCartSound(sound: music.Playable) {
         music.play(sound, music.PlaybackMode.InBackground)
     }
@@ -186,10 +188,10 @@ namespace railCart {
     /**
      * Run the code when the ride starts.
     */
-    //% blockId=railcart_on_ride_start
     //% block="on ride start %handler"
     //% group="Events"
-    //% param.handler.shadow="procedures_callnoreturn"
+    //% @param handler.shadow="procedures_callnoreturn"
+    //% blockId=railcart_on_ride_start
     export function onRideStart(handler: () => void) {
         onStart = handler
     }
@@ -199,6 +201,7 @@ namespace railCart {
      */
     //% block="on ride finished %handler"
     //% group="Events"
+    //% blockId=railcart_on_finish
     export function onRideFinish(handler: () => void) {
         onFinish = handler
     }
@@ -209,6 +212,7 @@ namespace railCart {
     //% block="on ride progress %percent %handler"
     //% group="Events"
     //% percent.defl=50
+    //% blockId=railcart_on_progress
     export function onRideProgress(percent: number, handler: () => void) {
         progressEvents.push({ percent, handler, triggered: false })
     }
@@ -284,6 +288,7 @@ namespace railCart {
     //% block="shake cart for %duration ms"
     //% group="Effects"
     //% duration.defl=500
+    //% blockId=railcart_shake
     export function shakeCart(duration: number) {
         const originalX = cart.x
         const originalY = cart.y
@@ -315,6 +320,7 @@ namespace railCart {
     //% group="Effects"
     //% vx.defl=0 vy.defl=0 time.defl=1000 onSprite.defl=true
     //% expandableArgumentMode="toggle"
+    //% blockId=railcart_trail_effect
     export function setTrailEffect(eType: EffectType, vx: number, vy: number, time: number, onSprite?: boolean, x?: number, y?: number) {
         if (!cart) return
 
@@ -338,7 +344,9 @@ namespace railCart {
     /**
      * Clears any effects on the cart
     */
+    //% block="clear any effect on cart"
     //% group="Effects"
+    //% blockId=railcart_clear_effects
     export function clearEffects() {
         effects.clearParticles(cart)
     }
@@ -349,6 +357,7 @@ namespace railCart {
      */
     //% block="current cart speed"
     //% group="Utilities"
+    //% blockId=railcart_get_speed
     export function getSpeed(): number { return baseSpeed + boostSpeed }
 
     /**
@@ -356,6 +365,7 @@ namespace railCart {
      */
     //% block="reverse cart direction"
     //% group="Utilities"
+    //% blockId=railcart_reverse
     export function reverseCart() { [start, end] = [end, start] }
 
     /**
@@ -363,6 +373,7 @@ namespace railCart {
     */
     //% block="ride progress percent"
     //% group="Utilities"
+    //% blockId=railcart_get_progress
     export function getProgress(): number {
         if (!active || !cart || !start || !end) return 0
 
@@ -389,6 +400,7 @@ namespace railCart {
     //% block="time remaining on cart ride (ms)"
     //% group="Utilities"
     //% advanced=true
+    //% blockId=railcart_time_remaining
     export function timeRemaining(): number {
         if (!active) return 0
         const elapsed = game.runtime() - startTime
@@ -406,6 +418,7 @@ namespace railCart {
     //% group="Advanced"
     //% weight=100
     //% advanced=true
+    //% blockId=railcart_force_velocity
     export function forceVelocity(vx: number, vy: number) {
         if (!activeCart) return
         rawVelocityOverride = true
@@ -420,6 +433,7 @@ namespace railCart {
     //% group="Advanced"
     //% weight=95
     //% advanced=true
+    //% blockId=railcart_restore_movement
     export function restoreMovement() {
         rawVelocityOverride = false
         easingEnabled = true
@@ -431,6 +445,7 @@ namespace railCart {
     //% group="Advanced"
     //% weight=90
     //% advanced=true
+    //% railcart_disable_easing
     export function disableEasing() {
         easingEnabled = false
     }
@@ -442,6 +457,7 @@ namespace railCart {
     //% group="Advanced"
     //% weight=85
     //% advanced=true
+    //% blockId=railcart_enable_easing
     export function enableEasing() {
         easingEnabled = true
     }
@@ -452,6 +468,7 @@ namespace railCart {
     //% group="Advanced"
     //% weight=80
     //% advanced=true
+    //% blockId=railcart_force_finish
     export function forceFinishRide() {
         if (!activeCart) return
         activeCart.vx = 0
@@ -469,6 +486,7 @@ namespace railCart {
     //% group="Advanced"
     //% weight=70
     //% advanced=true
+    //% blockId=railcart_teleport
     export function teleportCart(x: number, y: number) {
         if (!activeCart) return
         activeCart.setPosition(x, y)
@@ -481,6 +499,7 @@ namespace railCart {
     //% group="Advanced"
     //% weight=60
     //% advanced=true
+    //% blockId=railcart_is_override
     export function isRawOverride(): boolean {
         return rawVelocityOverride
     }
