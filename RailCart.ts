@@ -218,23 +218,27 @@ namespace railCart {
     //% group="Events"
     //% @param handler.shadow="procedures_callnoreturn"
     //% blockId=railcart_on_ride_start
+    //% blockAllowMultiple=1
+
     export function onRideStart(handler: () => void) {
         onStart = handler
     }
 
     /**
      * Run the code when the ride finishes.
-     */
+    */
     //% block="on ride finished %handler"
     //% group="Events"
     //% blockId=railcart_on_finish
+    //% blockAllowMultiple=1
+    //% handler.shadow="procedures_callnoreturn"
     export function onRideFinish(handler: () => void) {
         onFinish = handler
     }
 
     /**
      * Runs the code when the ride progress reaches a certain point
-     */
+    */
     //% block="on ride progress %percent %handler"
     //% group="Events"
     //% percent.defl=50
@@ -244,12 +248,14 @@ namespace railCart {
     }
 
     /**
- * Run code when a passenger is added
- */
+        * Run code when a passenger is added
+    */
     //% block="on passenger added %handler"
     //% group="Events"
     //% blockId=railcart_on_passenger_added
     //% handler.shadow="procedures_callnoreturn"
+    //% blockAllowMultiple=1
+
     export function onPassengerAdded(handler: () => void) {
         passengerAddedHandler = handler
     }
