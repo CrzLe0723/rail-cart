@@ -119,6 +119,7 @@ namespace railCart {
     //% block="start rail ride rider %rider cart %cartSprite from %from to %to"
     //% group="Ride"
     //% blockId=railcart_start_ride
+    //% weight=100
     export function startRide(rider: Sprite, cartSprite: Sprite, from: tiles.Location, to: tiles.Location) {
         if (active) return
         player = rider
@@ -156,6 +157,7 @@ namespace railCart {
     //% block="pause ride"
     //% group="Ride"
     //% blockId=railcart_pause_ride
+    //% weight=94
     export function pauseRide() {
         if (!active) return
         active = false
@@ -168,6 +170,7 @@ namespace railCart {
     //% block="resume ride"
     //% group="Ride"
     //% blockId=railcart_resume_ride
+    //% weight=96
     export function resumeRide() {
         if (active) return
         active = true
@@ -180,6 +183,7 @@ namespace railCart {
     //% block="stop cart immediately"
     //% group="Ride"
     //% blockId=railcart_stop_ride
+    //% weight=92
     export function stopRide() { active = false }
 
     /**
@@ -207,6 +211,7 @@ namespace railCart {
     //% block="change ride destination to %to"
     //% group="Ride"
     //% blockId=railcart_change_destination
+    //% weight=98
     export function changeDestination(to: tiles.Location) { end = to }
 
     // --- Event Blocks ---
