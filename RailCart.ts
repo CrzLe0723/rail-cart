@@ -228,7 +228,7 @@ namespace railCart {
     //% blockId=railcart_on_ride_start
     //% blockAllowMultiple=1
     //% handler.shadow="procedures_callnoreturn"
-    //% weight=100
+    //% weight=80
     export function onRideStart(handler: () => void) {
         onStart = handler
     }
@@ -241,7 +241,7 @@ namespace railCart {
     //% blockId=railcart_on_finish
     //% blockAllowMultiple=1
     //% handler.shadow="procedures_callnoreturn"
-    //% weight=95
+    //% weight=75
     export function onRideFinish(handler: () => void) {
         onFinish = handler
     }
@@ -255,7 +255,7 @@ namespace railCart {
     //% blockId=railcart_on_progress
     //% blockAllowMultiple=1
     //% handler.shadow="procedures_callnoreturn"
-    //% weight=90
+    //% weight=70
     export function onRideProgress(percent: number, handler: () => void) {
         progressEvents.push({ percent, handler, triggered: false })
     }
@@ -268,7 +268,7 @@ namespace railCart {
     //% blockId=railcart_on_passenger_added
     //% handler.shadow="procedures_callnoreturn"
     //% blockAllowMultiple=1
-    //% weight=70
+    //% weight=50
     export function onPassengerAdded(handler: () => void) {
         passengerAddedHandler = handler
     }
@@ -282,7 +282,7 @@ namespace railCart {
     //% blockId=railcart_on_pause
     //% handler.shadow="procedures_callnoreturn"
     //% blockAllowMultiple=1
-    //% weight=85
+    //% weight=65
     export function onCartPaused(handler: () => void) { pauseHandler = handler }
     let pauseHandler: () => void = null
 
@@ -294,7 +294,7 @@ namespace railCart {
     //% blockId=railcart_on_resume
     //% handler.shadow="procedures_callnoreturn"
     //% blockAllowMultiple=1
-    //% weight=80
+    //% weight=60
     export function onCartResumed(handler: () => void) { resumeHandler = handler }
     let resumeHandler: () => void = null
 
@@ -306,7 +306,7 @@ namespace railCart {
     //% blockId=railcart_on_midpoint
     //% handler.shadow="procedures_callnoreturn"
     //% blockAllowMultiple=1
-    //% weight=75
+    //% weight=55
     export function onCartMidpoint(handler: () => void) {
         onRideProgress(50, handler)
     }
