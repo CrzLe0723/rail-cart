@@ -156,7 +156,11 @@ namespace railCart {
     //% block="pause ride"
     //% group="Ride"
     //% blockId=railcart_pause_ride
-    export function pauseRide() { active = false }
+    export function pauseRide() {
+        if (!active) return
+        active = false
+        if (pauseHandler) pauseHandler()
+    }
 
     /**
      * Resumes the cart if paused.
@@ -164,7 +168,11 @@ namespace railCart {
     //% block="resume ride"
     //% group="Ride"
     //% blockId=railcart_resume_ride
-    export function resumeRide() { active = true }
+    export function resumeRide() {
+        if (active) return
+        active = true
+        if (resumeHandler) resumeHandler()
+    }
 
     /**
      * Immediately stops the cart and unlocks the player.
@@ -286,6 +294,7 @@ namespace railCart {
     // --- Update Loop ---
     game.onUpdate(function () {
         if (!active) return
+        if (rawVelocityOverride) return
 
         let target = tileCenter(end)
         let dx = target.x - cart.x
@@ -338,6 +347,10 @@ namespace railCart {
         tiles.placeOnTile(player, end)
         player.ay = 500
         controller.moveSprite(player, 75, 0)
+        rawVelocityOverride = false
+        easingEnabled = true
+        progressEvents.forEach(e => e.triggered = false)
+        passengers = []
         if (onFinish) onFinish()
     }
 
@@ -381,6 +394,10 @@ namespace railCart {
     //% group="Effects"
     //% vx.defl=0 vy.defl=0 time.defl=1000 onSprite.defl=true
     //% expandableArgumentMode="toggle"
+    //% x.shadow="math_number"
+    //% y.shadow="math_number"
+    //% x.defl=0
+    //% y.defl=0
     //% blockId=railcart_trail_effect
     export function setTrailEffect(eType: EffectType, vx: number, vy: number, time: number, onSprite?: boolean, x?: number, y?: number) {
         if (!cart) return
