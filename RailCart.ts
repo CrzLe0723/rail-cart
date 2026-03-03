@@ -627,7 +627,6 @@ namespace railCart {
         * Restore normal cart movement and re-enable easing.
     */
     //% block="restore normal cart movement"
-    //% group="Advanced"
     //% weight=95
     //% advanced=true
     //% blockId=railcart_restore_movement
@@ -639,7 +638,6 @@ namespace railCart {
         * Temporarily disable easing for sharp movement.
     */
     //% block="disable easing temporarily"
-    //% group="Advanced"
     //% weight=90
     //% advanced=true
     //% blockId=railcart_disable_easing
@@ -651,7 +649,6 @@ namespace railCart {
         * Re-enable cart easing.
     */
     //% block="enable easing"
-    //% group="Advanced"
     //% weight=85
     //% advanced=true
     //% blockId=railcart_enable_easing
