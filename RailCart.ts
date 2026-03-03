@@ -199,7 +199,7 @@ namespace railCart {
     //% group="Utilities"
     //% blockId=railcart_is_paused
     export function isPaused(): boolean {
-        return !active && player != null
+        return !active && player != null && distanceToDestination() > 0
     }
     /**
      * Change the destination to another location
@@ -343,6 +343,8 @@ namespace railCart {
 
         // Move passengers
         for (let p of passengers) {
+            p.vx = 0
+            p.vy = 0
             p.x = cart.x
             p.y = cart.y - 4
         }
@@ -425,7 +427,7 @@ namespace railCart {
             if (onSprite) {
                 extraEffects.createSpreadEffectOnAnchor(cart, fx, time)
             } else {
-                // Optionally, you could spawn the effect at cart.x/cart.y
+                
                 extraEffects.createSpreadEffectAt(fx, x, y, time)
             }
         }
@@ -562,6 +564,7 @@ namespace railCart {
     export function setDirection(dir: CartDirection) {
         if (!cart) return
         if (dir === CartDirection.Forward) {
+            
             [start, end] = [start, end] // normal
         } else {
             [start, end] = [end, start] // reverse
@@ -689,6 +692,7 @@ namespace railCart {
         rawVelocityOverride = false
         passengers = []
         if (onFinish) onFinish()
+        finishRide()
     }
 
     /**
