@@ -110,6 +110,7 @@ namespace railCart {
     //% block="follow cart with camera"
     //% group="Setup"
     //% blockId=railcart_follow_camera
+    //% weight=90
     export function followCartCamera() { scene.cameraFollowSprite(cart) }
 
 
