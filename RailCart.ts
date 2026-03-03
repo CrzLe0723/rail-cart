@@ -86,7 +86,7 @@ namespace railCart {
     /**
      * Returns true if the cart is currently moving
      */
-    //% block="Is cart currently moving"
+    //% block="is cart currently moving"
     //% group="Setup"
     //% blockId=railcart_is_active
     export function isActive(): boolean {
@@ -97,7 +97,7 @@ namespace railCart {
      * Sets a sound for the cart
      */
     //% block="set cart sound %sound"
-    //% group="Setup"
+    //% group="Audio"
     //% blockId=railcart_set_sound
     export function setCartSound(sound: music.Playable) {
         music.play(sound, music.PlaybackMode.InBackground)
@@ -196,7 +196,7 @@ namespace railCart {
      * Returns true if the ride is paused
      */
     //% block="is cart paused"
-    //% group="Ride"
+    //% group="Utilities"
     //% blockId=railcart_is_paused
     export function isPaused(): boolean {
         return !active && player != null
