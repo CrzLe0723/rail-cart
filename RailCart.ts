@@ -186,10 +186,10 @@ namespace railCart {
      * Returns true if the ride has finished
      */
     //% block="cart ride finished?"
-    //% group="Ride"
+    //% group="Utilities"
     //% blockId=railcart_has_finished
     export function hasRideFinished(): boolean {
-        return !active
+        return !active && player !== null
     }
 
     /**
@@ -216,10 +216,9 @@ namespace railCart {
     */
     //% block="on ride start %handler"
     //% group="Events"
-    //% @param handler.shadow="procedures_callnoreturn"
     //% blockId=railcart_on_ride_start
     //% blockAllowMultiple=1
-
+    //% handler.shadow="procedures_callnoreturn"
     export function onRideStart(handler: () => void) {
         onStart = handler
     }
@@ -243,6 +242,8 @@ namespace railCart {
     //% group="Events"
     //% percent.defl=50
     //% blockId=railcart_on_progress
+    //% blockAllowMultiple=1
+    //% handler.shadow="procedures_callnoreturn"
     export function onRideProgress(percent: number, handler: () => void) {
         progressEvents.push({ percent, handler, triggered: false })
     }
@@ -255,7 +256,6 @@ namespace railCart {
     //% blockId=railcart_on_passenger_added
     //% handler.shadow="procedures_callnoreturn"
     //% blockAllowMultiple=1
-
     export function onPassengerAdded(handler: () => void) {
         passengerAddedHandler = handler
     }
@@ -268,6 +268,8 @@ namespace railCart {
     //% group="Events"
     //% blockId=railcart_on_pause
     //% handler.shadow="procedures_callnoreturn"
+    //% blockAllowMultiple=1
+
     export function onCartPaused(handler: () => void) { pauseHandler = handler }
     let pauseHandler: () => void = null
 
@@ -278,6 +280,8 @@ namespace railCart {
     //% group="Events"
     //% blockId=railcart_on_resume
     //% handler.shadow="procedures_callnoreturn"
+    //% blockAllowMultiple=1
+
     export function onCartResumed(handler: () => void) { resumeHandler = handler }
     let resumeHandler: () => void = null
 
@@ -288,6 +292,8 @@ namespace railCart {
     //% group="Events"
     //% blockId=railcart_on_midpoint
     //% handler.shadow="procedures_callnoreturn"
+    //% blockAllowMultiple=1
+
     export function onCartMidpoint(handler: () => void) {
         onRideProgress(50, handler)
     }
@@ -679,6 +685,10 @@ namespace railCart {
         cart.vx = 0
         cart.vy = 0
         cart = null
+        active = false
+        rawVelocityOverride = false
+        passengers = []
+        if (onFinish) onFinish()
     }
 
     /**
