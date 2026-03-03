@@ -513,7 +513,6 @@ namespace railCart {
      */
     //% block="time remaining on cart ride (ms)"
     //% group="Utilities"
-    //% advanced=true
     //% blockId=railcart_time_remaining
     export function timeRemaining(): number {
         if (!active) return 0
@@ -641,7 +640,6 @@ namespace railCart {
      */
     //% block="is cart easing enabled"
     //% advanced=true
-    //% group="Advanced"
     //% weight=50
     //% blockId=railcart_is_easing
     export function isEasingEnabled(): boolean {
@@ -695,7 +693,6 @@ namespace railCart {
      */
     //% block="active cart sprite"
     //% group="Advanced"
-    //% advanced=true
     //% blockId=railcart_get_active_sprite
     export function getActiveCart(): Sprite {
         return activeCart
