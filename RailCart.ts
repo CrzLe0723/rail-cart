@@ -53,9 +53,9 @@ namespace railCart {
 
     // --- Direction Options ---
     export enum CartDirection {
-        //% block="forward"
+        //% block="forward" weight=100
         Forward,
-        //% block="backward"
+        //% block="backward" weight=90
         Backward
     }
     // --- Setup Blocks ---
