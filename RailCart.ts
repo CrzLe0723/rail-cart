@@ -58,6 +58,8 @@ namespace railCart {
         //% block="backward" weight=90
         Backward
     }
+    let direction: CartDirection = CartDirection.Forward
+    
     // --- Setup Blocks ---
 
     /**
@@ -77,7 +79,7 @@ namespace railCart {
      */
     //% block="set easing type $type"
     //% group="Setup"
-    //% blockId=railcart_set_speed
+    //% blockId=railcart_set_easing
     export function setEasing(type: EasingType) {
         easing = type
     }
@@ -122,6 +124,7 @@ namespace railCart {
         if (active) return
         player = rider
         cart = cartSprite
+        activeCart = cartSprite
         start = from
         end = to
         passengers = []
@@ -533,6 +536,7 @@ namespace railCart {
         } else {
             [start, end] = [end, start] // reverse
         }
+        direction = dir
     }
 
     /**
@@ -542,8 +546,7 @@ namespace railCart {
     //% group="Utilities"
     //% blockId=railcart_get_direction
     export function getDirection(): CartDirection {
-        if (!activeCart) return CartDirection.Forward
-        return start === start ? CartDirection.Forward : CartDirection.Backward
+        return direction
     }
 
     // --- Speed Helpers ---
@@ -572,8 +575,9 @@ namespace railCart {
     //% blockId=railcart_temp_boost
     export function temporaryBoost(amount: number, duration: number) {
         baseSpeed += amount
-        pause(duration)
-        baseSpeed -= amount
+        timer.after(duration, function () {
+            baseSpeed -= amount
+        })
     }
 
     // --- Advanced Blocks ---
@@ -615,7 +619,7 @@ namespace railCart {
     //% group="Advanced"
     //% weight=90
     //% advanced=true
-    //% railcart_disable_easing
+    //% blockId=railcart_disable_easing
     export function disableEasing() {
         easingEnabled = false
     }
