@@ -185,7 +185,7 @@ namespace railCart {
     /**
      * Returns true if the ride has finished
      */
-    //% block="has cart ride finished"
+    //% block="cart ride finished?"
     //% group="Ride"
     //% blockId=railcart_has_finished
     export function hasRideFinished(): boolean {
@@ -465,14 +465,18 @@ namespace railCart {
     //% group="Utilities"
     //% blockId=railcart_reverse
     export function reverseCart() { [start, end] = [end, start] }
-    /**
-     * Get the cart's position
-     */
-    //% block="cart position"
+    //% block="cart x position"
     //% group="Utilities"
-    //% blockId=railcart_get_position
-    export function cartPosition(): { x: number, y: number } {
-        return { x: cart.x, y: cart.y }
+    //% blockId=railcart_cart_x
+    export function cartX(): number {
+        return cart ? cart.x : 0
+    }
+
+    //% block="cart y position"
+    //% group="Utilities"
+    //% blockId=railcart_cart_y
+    export function cartY(): number {
+        return cart ? cart.y : 0
     }
 
     /**
