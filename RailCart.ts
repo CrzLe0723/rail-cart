@@ -646,7 +646,7 @@ namespace railCart {
         * Re-enable cart easing.
     */
     //% block="enable easing"
-    //% group="Advanced"
+    //% group=Advanced
     //% weight=85
     //% advanced=true
     //% blockId=railcart_enable_easing
@@ -658,6 +658,7 @@ namespace railCart {
      * Returns true if easing is enabled
      */
     //% block="is cart easing enabled"
+    //% group=Utilities
     //% advanced=true
     //% weight=50
     //% blockId=railcart_is_easing
@@ -668,7 +669,7 @@ namespace railCart {
         * Immediately finish the current rail ride.
     */
     //% block="force finish ride"
-    //% group="Advanced"
+    //% group=Advanced
     //% weight=80
     //% advanced=true
     //% blockId=railcart_force_finish
@@ -686,7 +687,7 @@ namespace railCart {
     */
     //% block="teleport cart to x $x y $y"
     //% x.defl=80 y.defl=60
-    //% group="Advanced"
+    //% group=Advanced
     //% weight=70
     //% advanced=true
     //% blockId=railcart_teleport
@@ -699,7 +700,7 @@ namespace railCart {
         * Check if raw velocity override is active.
     */
     //% block="raw velocity override active"
-    //% group="Advanced"
+    //% group=Advanced
     //% weight=60
     //% advanced=true
     //% blockId=railcart_is_override
@@ -711,7 +712,8 @@ namespace railCart {
      * Get the active cart sprite
      */
     //% block="active cart sprite"
-    //% group="Advanced"
+    //% group=Advanced
+    //% advanced=true
     //% blockId=railcart_get_active_sprite
     export function getActiveCart(): Sprite {
         return cart
@@ -721,7 +723,7 @@ namespace railCart {
      * Cancel a specific progress event
      */
     //% block="cancel progress event at %percent %"
-    //% group="Advanced"
+    //% group=Advanced
     //% advanced=true
     //% blockId=railcart_cancel_progress
     export function cancelProgressEvent(percent: number) {
@@ -732,7 +734,7 @@ namespace railCart {
      * Adds another sprite to ride the cart.
      */
     //% block="add passenger %p"
-    //% group="Passengers"
+    //% group=Passengers
     //% blockId=railcart_add_passenger
     export function addPassenger(p: Sprite) {
         passengers.push(p)
@@ -742,7 +744,7 @@ namespace railCart {
      * Returns true if there are passengers on the cart
      */
     //% block="cart has passengers"
-    //% group="Passengers"
+    //% group=Passengers
     //% blockId=railcart_has_passengers
     export function hasPassengers(): boolean {
         return passengers.length > 0
@@ -752,7 +754,7 @@ namespace railCart {
      * Get the passenger count
      */
     //% block="number of passengers on cart"
-    //% group="Passengers"
+    //% group=Passengers
     //% blockId=railcart_passenger_count
     export function passengerCount(): number {
         return passengers.length
@@ -762,7 +764,7 @@ namespace railCart {
      * Clear all passengers 
      */
     //% block="remove all passengers"
-    //% group="Passengers"
+    //% group=Passengers
     //% blockId=railcart_clear_passengers
     export function clearPassengers() {
         passengers = []
@@ -772,7 +774,7 @@ namespace railCart {
      * Detach a passenger from the cart
     */
     //% block="detach passenger %p"
-    //% group="Passengers"
+    //% group=Passengers
     //% blockId=railcart_detach_passenger
     export function detachPassenger(p: Sprite) {
         passengers = passengers.filter(ps => ps !== p)
@@ -782,7 +784,7 @@ namespace railCart {
      * Teleport a passenger separately
     */
     //% block="teleport passenger %p to x $x y $y"
-    //% group="Passengers"
+    //% group=Passengers
     //% blockId=railcart_teleport_passenger
     export function teleportPassenger(p: Sprite, x: number, y: number) {
         p.setPosition(x, y)
@@ -792,7 +794,7 @@ namespace railCart {
      * Check if a specific sprite is on the cart
     */
     //% block="is %p on the cart"
-    //% group="Passengers"
+    //% group=Passengers
     //% blockId=railcart_is_on_cart
     export function isOnCart(p: Sprite): boolean {
         return passengers.indexOf(p) !== -1
