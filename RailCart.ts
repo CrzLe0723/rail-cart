@@ -68,6 +68,7 @@ namespace railCart {
     //% group="Setup"
     //% speed.defl=0.8 boost.defl=5.5
     //% blockId=railcart_set_speed
+    //% weight=100
     export function setSpeed(speed: number, boost: number) {
         baseSpeed = speed
         boostSpeed = boost
