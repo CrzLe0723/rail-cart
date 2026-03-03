@@ -15,7 +15,6 @@ namespace railCart {
     let onStart: () => void = null
     let passengers: Sprite[] = []
     let effectType: any = null
-    let activeCart: Sprite = null
     let easingEnabled = true
     let rawVelocityOverride = false
     let startTime = 0
@@ -124,7 +123,6 @@ namespace railCart {
         if (active) return
         player = rider
         cart = cartSprite
-        activeCart = cartSprite
         start = from
         end = to
         passengers = []
@@ -529,7 +527,7 @@ namespace railCart {
     //% group="Utilities"
     //% blockId=railcart_set_direction
     export function setDirection(dir: CartDirection) {
-        if (!activeCart) return
+        if (!cart) return
         if (dir === CartDirection.Forward) {
             [start, end] = [start, end] // normal
         } else {
@@ -593,10 +591,10 @@ namespace railCart {
     //% advanced=true
     //% blockId=railcart_force_velocity
     export function forceVelocity(vx: number, vy: number) {
-        if (!activeCart) return
+        if (!cart) return
         rawVelocityOverride = true
-        activeCart.vx = vx
-        activeCart.vy = vy
+        cart.vx = vx
+        cart.vy = vy
     }
 
     /**
@@ -654,10 +652,10 @@ namespace railCart {
     //% advanced=true
     //% blockId=railcart_force_finish
     export function forceFinishRide() {
-        if (!activeCart) return
-        activeCart.vx = 0
-        activeCart.vy = 0
-        activeCart = null
+        if (!cart) return
+        cart.vx = 0
+        cart.vy = 0
+        cart = null
     }
 
     /**
@@ -672,8 +670,8 @@ namespace railCart {
     //% advanced=true
     //% blockId=railcart_teleport
     export function teleportCart(x: number, y: number) {
-        if (!activeCart) return
-        activeCart.setPosition(x, y)
+        if (!cart) return
+        cart.setPosition(x, y)
     }
 
     /**
@@ -695,7 +693,7 @@ namespace railCart {
     //% group="Advanced"
     //% blockId=railcart_get_active_sprite
     export function getActiveCart(): Sprite {
-        return activeCart
+        return cart
     }
 
     /**
