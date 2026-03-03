@@ -402,7 +402,7 @@ namespace railCart {
     * @param x set the x position of the effect (optional)
     * @param y set the y position of the effect (optional)
     */
-    //% block="set trail effect %eType with vx %vx vy %vy for %time ms attach to sprite %onSprite"
+    //% block="set trail effect %eType with vx %vx vy %vy for %time ms attach to sprite %onSprite||at x %x y %y"
     //% group="Effects"
     //% vx.defl=0 vy.defl=0 time.defl=1000 onSprite.defl=true
     //% expandableArgumentMode="toggle"
