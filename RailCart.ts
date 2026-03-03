@@ -80,6 +80,7 @@ namespace railCart {
     //% block="set easing type $type"
     //% group="Setup"
     //% blockId=railcart_set_easing
+    //% weight=95
     export function setEasing(type: EasingType) {
         easing = type
     }
@@ -90,6 +91,7 @@ namespace railCart {
     //% block="is cart currently moving"
     //% group="Setup"
     //% blockId=railcart_is_active
+    //% weight=85
     export function isActive(): boolean {
         return active
     }
@@ -226,6 +228,7 @@ namespace railCart {
     //% blockId=railcart_on_ride_start
     //% blockAllowMultiple=1
     //% handler.shadow="procedures_callnoreturn"
+    //% weight=100
     export function onRideStart(handler: () => void) {
         onStart = handler
     }
@@ -238,6 +241,7 @@ namespace railCart {
     //% blockId=railcart_on_finish
     //% blockAllowMultiple=1
     //% handler.shadow="procedures_callnoreturn"
+    //% weight=95
     export function onRideFinish(handler: () => void) {
         onFinish = handler
     }
@@ -251,6 +255,7 @@ namespace railCart {
     //% blockId=railcart_on_progress
     //% blockAllowMultiple=1
     //% handler.shadow="procedures_callnoreturn"
+    //% weight=90
     export function onRideProgress(percent: number, handler: () => void) {
         progressEvents.push({ percent, handler, triggered: false })
     }
@@ -263,6 +268,7 @@ namespace railCart {
     //% blockId=railcart_on_passenger_added
     //% handler.shadow="procedures_callnoreturn"
     //% blockAllowMultiple=1
+    //% weight=70
     export function onPassengerAdded(handler: () => void) {
         passengerAddedHandler = handler
     }
@@ -276,7 +282,7 @@ namespace railCart {
     //% blockId=railcart_on_pause
     //% handler.shadow="procedures_callnoreturn"
     //% blockAllowMultiple=1
-
+    //% weight=85
     export function onCartPaused(handler: () => void) { pauseHandler = handler }
     let pauseHandler: () => void = null
 
@@ -288,7 +294,7 @@ namespace railCart {
     //% blockId=railcart_on_resume
     //% handler.shadow="procedures_callnoreturn"
     //% blockAllowMultiple=1
-
+    //% weight=80
     export function onCartResumed(handler: () => void) { resumeHandler = handler }
     let resumeHandler: () => void = null
 
@@ -300,7 +306,7 @@ namespace railCart {
     //% blockId=railcart_on_midpoint
     //% handler.shadow="procedures_callnoreturn"
     //% blockAllowMultiple=1
-
+    //% weight=75
     export function onCartMidpoint(handler: () => void) {
         onRideProgress(50, handler)
     }
