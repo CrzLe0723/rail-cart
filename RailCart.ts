@@ -153,6 +153,8 @@ namespace railCart {
         active = true
         startTime = game.runtime()
         estimatedDuration = totalDist / (baseSpeed + boostSpeed) * 16
+        resetProgressEvents()
+        fireRideStart()
 
     }
 
@@ -166,6 +168,7 @@ namespace railCart {
     export function pauseRide() {
         if (!active) return
         active = false
+        firePause()
     }
 
     /**
@@ -178,6 +181,7 @@ namespace railCart {
     export function resumeRide() {
         if (active) return
         active = true
+        fireResume()
     }
 
     /**
@@ -253,7 +257,7 @@ namespace railCart {
      * Runs the code when the ride progress reaches a certain point
     */
     //% blockId=railcart_on_progress
-    //% block="on rail ride progress %percent %handler"
+    //% block="on rail ride progress %percent%"
     //% draggableParameters="reporter"
     //% percent.defl=50
     //% group="Events"
@@ -277,8 +281,29 @@ namespace railCart {
     }
    
 
-
+    //% block="on cart paused"
+    //% draggableParameters="reporter"
+    //% group="Events"
+    //% blockId=railcart_on_pause
+    export function onCartPaused(handler: () => void) {
+        let handlers = game.currentScene().data[PAUSE_HANDLERS_KEY] as (() => void)[]
+        if (!handlers) {
+            game.currentScene().data[PAUSE_HANDLERS_KEY] = handlers = []
+        }
+        handlers.push(handler)
+    }
     
+    //% block="on cart resumed"
+    //% draggableParameters="reporter"
+    //% group="Events"
+    //% blockId=railcart_on_resume
+    export function onCartResumed(handler: () => void) {
+        let handlers = game.currentScene().data[RESUME_HANDLERS_KEY] as (() => void)[]
+        if (!handlers) {
+            game.currentScene().data[RESUME_HANDLERS_KEY] = handlers = []
+        }
+        handlers.push(handler)
+    }
 
 
     
@@ -322,7 +347,20 @@ namespace railCart {
         const handlers = getFinishHandlers();
         if (handlers) handlers.forEach(h => h());
     }
+    function firePause() {
+        const handlers = game.currentScene().data[PAUSE_HANDLERS_KEY] as (() => void)[]
+        if (handlers) handlers.forEach(h => h())
+    }
 
+    function fireResume() {
+        const handlers = game.currentScene().data[RESUME_HANDLERS_KEY] as (() => void)[]
+        if (handlers) handlers.forEach(h => h())
+    }
+
+    function firePassengerAdded() {
+        const handlers = game.currentScene().data[PASSENGER_HANDLERS_KEY] as (() => void)[]
+        if (handlers) handlers.forEach(h => h())
+    }
     function resetProgressEvents() {
         const handlers = getProgressHandlers();
         if (handlers) handlers.forEach(h => h.triggered = false);
@@ -391,6 +429,7 @@ namespace railCart {
         rawVelocityOverride = false
         easingEnabled = true
         passengers = []
+        fireRideFinish()
     }
     class ProgressHandler {
         constructor(
