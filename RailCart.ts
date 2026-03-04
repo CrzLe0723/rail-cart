@@ -286,11 +286,13 @@ namespace railCart {
     //% group="Events"
     //% blockId=railcart_on_pause
     export function onCartPaused(handler: () => void) {
-        let handlers = game.currentScene().data[PAUSE_HANDLERS_KEY] as (() => void)[]
-        if (!handlers) {
-            game.currentScene().data[PAUSE_HANDLERS_KEY] = handlers = []
-        }
-        handlers.push(handler)
+        game.addScenePushHandler(() => {
+            let handlers = game.currentScene().data[PAUSE_HANDLERS_KEY] as (() => void)[]
+            if (!handlers) {
+                game.currentScene().data[PAUSE_HANDLERS_KEY] = handlers = []
+            }
+            handlers.push(handler)
+        })
     }
     
     //% block="on cart resumed"
@@ -340,26 +342,26 @@ namespace railCart {
 
     function fireRideStart() {
         const handlers = getStartHandlers();
-        if (handlers) handlers.forEach(h => h());
+        if (handlers) handlers.slice().forEach(h => h())
     }
 
     function fireRideFinish() {
         const handlers = getFinishHandlers();
-        if (handlers) handlers.forEach(h => h());
+        if (handlers) handlers.slice().forEach(h => h())
     }
     function firePause() {
         const handlers = game.currentScene().data[PAUSE_HANDLERS_KEY] as (() => void)[]
-        if (handlers) handlers.forEach(h => h())
+        if (handlers) handlers.slice().forEach(h => h())
     }
 
     function fireResume() {
         const handlers = game.currentScene().data[RESUME_HANDLERS_KEY] as (() => void)[]
-        if (handlers) handlers.forEach(h => h())
+        if (handlers) handlers.slice().forEach(h => h())
     }
 
     function firePassengerAdded() {
         const handlers = game.currentScene().data[PASSENGER_HANDLERS_KEY] as (() => void)[]
-        if (handlers) handlers.forEach(h => h())
+        if (handlers) handlers.slice().forEach(h => h())
     }
     function resetProgressEvents() {
         const handlers = getProgressHandlers();
