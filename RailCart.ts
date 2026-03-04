@@ -881,6 +881,8 @@ namespace railCart {
     //% block="is %p on the cart"
     //% group="Passengers"
     //% blockId=railcart_is_on_cart
+    //% p.shadow="variables_get"
+    //% p.defl="passenger"
     export function isOnCart(p: Sprite): boolean {
         return passengers.indexOf(p) !== -1
     }
