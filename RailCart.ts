@@ -266,7 +266,7 @@ namespace railCart {
     //% block="on rail ride progress %percent%"
     //% draggableParameters="reporter"
     //% percent.defl=50
-    //% group="Events"
+    //% advanced=true
     export function onRideProgress(percent: number, handler: () => void) {
         game.addScenePushHandler(() => {
             const scene = game.currentScene()
