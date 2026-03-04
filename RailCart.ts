@@ -58,7 +58,7 @@ namespace railCart {
         Backward
     }
     let direction: CartDirection = CartDirection.Forward
-    
+
     // --- Setup Blocks ---
 
     /**
@@ -440,7 +440,7 @@ namespace railCart {
             if (onSprite) {
                 extraEffects.createSpreadEffectOnAnchor(cart, fx, time)
             } else {
-                
+
                 extraEffects.createSpreadEffectAt(fx, x, y, time)
             }
         }
@@ -475,7 +475,7 @@ namespace railCart {
     export function loopTrailEffect(enabled: boolean) {
         trailLoopEnabled = enabled
     }
-    
+
     // --- Utilities Blocks ---
     /**
      * Gets the cart's current speed
@@ -577,7 +577,7 @@ namespace railCart {
     export function setDirection(dir: CartDirection) {
         if (!cart) return
         if (dir === CartDirection.Forward) {
-            
+
             [start, end] = [start, end] // normal
         } else {
             [start, end] = [end, start] // reverse
