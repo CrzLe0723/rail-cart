@@ -124,6 +124,7 @@ namespace railCart {
     //% group="Ride"
     //% blockId=railcart_start_ride
     //% weight=100
+    //% help=github:rail-cart/docs/Ride
     export function startRide(rider: Sprite, cartSprite: Sprite, from: tiles.Location, to: tiles.Location) {
         if (active) return
         player = rider
