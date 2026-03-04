@@ -52,9 +52,9 @@ namespace railCart {
 
     // --- Direction Options ---
     export enum CartDirection {
-        //% block="forward" weight=100
+        //% block="forward" 
         Forward,
-        //% block="backward" weight=90
+        //% block="backward" 
         Backward
     }
     let direction: CartDirection = CartDirection.Forward
