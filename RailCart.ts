@@ -10,9 +10,6 @@ namespace railCart {
     let totalDist = 0
     let baseSpeed = 0.8
     let boostSpeed = 5.5
-    let progressEvents: { percent: number, handler: () => void, triggered: boolean }[] = []
-    let onFinish: () => void = null
-    let onStart: () => void = null
     let passengers: Sprite[] = []
     let effectType: any = null
     let easingEnabled = true
@@ -21,6 +18,13 @@ namespace railCart {
     let estimatedDuration = 0
     let trailLoopEnabled = false
     let effectColor: number = 0
+    const RAILCART_DATA_KEY = "RAILCART_DATA"
+    const START_HANDLERS_KEY = RAILCART_DATA_KEY + "_START"
+    const FINISH_HANDLERS_KEY = RAILCART_DATA_KEY + "_FINISH"
+    const PROGRESS_HANDLERS_KEY = RAILCART_DATA_KEY + "_PROGRESS"
+    const PAUSE_HANDLERS_KEY = RAILCART_DATA_KEY + "_PAUSE"
+    const RESUME_HANDLERS_KEY = RAILCART_DATA_KEY + "_RESUME"
+    const PASSENGER_HANDLERS_KEY = RAILCART_DATA_KEY + "_PASSENGER"
     // --- Easing options ---
     export enum EasingType {
         //% block="Sine"
@@ -124,7 +128,6 @@ namespace railCart {
     //% group="Ride"
     //% blockId=railcart_start_ride
     //% weight=100
-    //% help=github:rail-cart/docs/Ride
     export function startRide(rider: Sprite, cartSprite: Sprite, from: tiles.Location, to: tiles.Location) {
         if (active) return
         player = rider
@@ -151,9 +154,6 @@ namespace railCart {
         startTime = game.runtime()
         estimatedDuration = totalDist / (baseSpeed + boostSpeed) * 16
 
-        if (onStart) {
-            onStart()
-        }
     }
 
     /**
@@ -166,7 +166,6 @@ namespace railCart {
     export function pauseRide() {
         if (!active) return
         active = false
-        if (pauseHandler) pauseHandler()
     }
 
     /**
@@ -179,7 +178,6 @@ namespace railCart {
     export function resumeRide() {
         if (active) return
         active = true
-        if (resumeHandler) resumeHandler()
     }
 
     /**
@@ -224,80 +222,67 @@ namespace railCart {
     /**
      * Run the code when the ride starts.
     */
-    //% block="on ride start %handler"
-    //% group="Events"
+    //% block="on rail ride start"
     //% blockId=railcart_on_ride_start
-    //% blockAllowMultiple=1
-    //% handler.shadow="procedures_callnoreturn"
-    //% weight=80
+    //% draggableParameters="reporter"
+    //% group="Events"
     export function onRideStart(handler: () => void) {
-        onStart = handler
+        let handlers = getStartHandlers();
+        if (!handlers) {
+            game.currentScene().data[START_HANDLERS_KEY] = handlers = [];
+        }
+        handlers.push(handler);
     }
 
     /**
      * Run the code when the ride finishes.
     */
-    //% block="on ride finished %handler"
-    //% group="Events"
     //% blockId=railcart_on_finish
-    //% blockAllowMultiple=1
-    //% handler.shadow="procedures_callnoreturn"
-    //% weight=75
+    //% block="on rail ride finished"
+    //% draggableParameters="reporter"
+    //% group="Events"
     export function onRideFinish(handler: () => void) {
-        onFinish = handler
+        let handlers = getFinishHandlers();
+        if (!handlers) {
+            game.currentScene().data[FINISH_HANDLERS_KEY] = handlers = [];
+        }
+        handlers.push(handler);
     }
 
     /**
      * Runs the code when the ride progress reaches a certain point
     */
-    //% block="on ride progress %percent %handler"
-    //% group="Events"
-    //% percent.defl=50
     //% blockId=railcart_on_progress
-    //% blockAllowMultiple=1
-    //% handler.shadow="procedures_callnoreturn"
-    //% weight=70
+    //% block="on rail ride progress %percent %handler"
+    //% draggableParameters="reporter"
+    //% percent.defl=50
+    //% group="Events"
     export function onRideProgress(percent: number, handler: () => void) {
-        progressEvents.push({ percent, handler, triggered: false })
+        let handlers = getProgressHandlers();
+        if (!handlers) {
+            game.currentScene().data[PROGRESS_HANDLERS_KEY] = handlers = [];
+        }
+        handlers.push(new ProgressHandler(percent, handler));
     }
-
-    /**
-        * Run code when a passenger is added
-    */
-    //% block="on passenger added %handler"
+    //% block="on passenger added"
+    ///% draggableParameters="reporter"
     //% group="Events"
     //% blockId=railcart_on_passenger_added
-    //% handler.shadow="procedures_callnoreturn"
-    //% blockAllowMultiple=1
-    //% weight=50
     export function onPassengerAdded(handler: () => void) {
-        passengerAddedHandler = handler
+        let handlers = game.currentScene().data[PASSENGER_HANDLERS_KEY] as (() => void)[]
+        if (!handlers) {
+            game.currentScene().data[PASSENGER_HANDLERS_KEY] = handlers = []
+        }
+        handlers.push(handler)
     }
-    let passengerAddedHandler: () => void = null
+   
 
-    /**
-     * Run code when the cart is paused
-     */
-    //% block="on cart paused %handler"
-    //% group="Events"
-    //% blockId=railcart_on_pause
-    //% handler.shadow="procedures_callnoreturn"
-    //% blockAllowMultiple=1
-    //% weight=65
-    export function onCartPaused(handler: () => void) { pauseHandler = handler }
-    let pauseHandler: () => void = null
 
-    /**
-     * Run code when the cart is resumed
-     */
-    //% block="on cart resumed %handler"
-    //% group="Events"
-    //% blockId=railcart_on_resume
-    //% handler.shadow="procedures_callnoreturn"
-    //% blockAllowMultiple=1
-    //% weight=60
-    export function onCartResumed(handler: () => void) { resumeHandler = handler }
-    let resumeHandler: () => void = null
+    
+
+
+    
+
 
     /**
      * Run code when cart reaches midpoint (50%)
@@ -316,7 +301,32 @@ namespace railCart {
     function tileCenter(t: tiles.Location) {
         return { x: t.col * 16 + 8, y: t.row * 16 + 8 }
     }
+    function getStartHandlers(): (() => void)[] {
+        return game.currentScene().data[START_HANDLERS_KEY];
+    }
 
+    function getFinishHandlers(): (() => void)[] {
+        return game.currentScene().data[FINISH_HANDLERS_KEY];
+    }
+
+    function getProgressHandlers(): ProgressHandler[] {
+        return game.currentScene().data[PROGRESS_HANDLERS_KEY];
+    }
+
+    function fireRideStart() {
+        const handlers = getStartHandlers();
+        if (handlers) handlers.forEach(h => h());
+    }
+
+    function fireRideFinish() {
+        const handlers = getFinishHandlers();
+        if (handlers) handlers.forEach(h => h());
+    }
+
+    function resetProgressEvents() {
+        const handlers = getProgressHandlers();
+        if (handlers) handlers.forEach(h => h.triggered = false);
+    }
     // --- Update Loop ---
     game.onUpdate(function () {
         if (!active) return
@@ -362,10 +372,13 @@ namespace railCart {
             p.x = cart.x
             p.y = cart.y - 4
         }
-        for (let e of progressEvents) {
-            if (!e.triggered && progress >= e.percent / 100) {
-                e.handler()
-                e.triggered = true
+        const handlers = getProgressHandlers();
+        if (handlers) {
+            for (const h of handlers) {
+                if (!h.triggered && progress >= h.percent / 100) {
+                    h.triggered = true;
+                    h.handler();
+                }
             }
         }
     })
@@ -377,11 +390,15 @@ namespace railCart {
         controller.moveSprite(player, 75, 0)
         rawVelocityOverride = false
         easingEnabled = true
-        progressEvents.forEach(e => e.triggered = false)
         passengers = []
-        if (onFinish) onFinish()
     }
-
+    class ProgressHandler {
+        constructor(
+            public percent: number,
+            public handler: () => void,
+            public triggered = false
+        ) { }
+    }
     // --- Effect Blocks ---
 
     /**
@@ -705,7 +722,6 @@ namespace railCart {
         active = false
         rawVelocityOverride = false
         passengers = []
-        if (onFinish) onFinish()
         finishRide()
     }
 
@@ -745,15 +761,7 @@ namespace railCart {
         return cart
     }
 
-    /**
-     * Cancel a specific progress event
-     */
-    //% block="cancel progress event at %percent %"
-    //% advanced=true
-    //% blockId=railcart_cancel_progress
-    export function cancelProgressEvent(percent: number) {
-        progressEvents = progressEvents.filter(e => e.percent !== percent)
-    }
+    
     // --- Passenger Blocks ---
     /**
      * Adds another sprite to ride the cart.
