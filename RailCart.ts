@@ -231,11 +231,14 @@ namespace railCart {
     //% draggableParameters="reporter"
     //% group="Events"
     export function onRideStart(handler: () => void) {
-        let handlers = getStartHandlers();
-        if (!handlers) {
-            game.currentScene().data[START_HANDLERS_KEY] = handlers = [];
-        }
-        handlers.push(handler);
+        game.addScenePushHandler(() => {
+            const scene = game.currentScene()
+            let handlers = scene.data[START_HANDLERS_KEY] as (() => void)[]
+            if (!handlers) {
+                scene.data[START_HANDLERS_KEY] = handlers = []
+            }
+            handlers.push(handler)
+        })
     }
 
     /**
@@ -246,11 +249,14 @@ namespace railCart {
     //% draggableParameters="reporter"
     //% group="Events"
     export function onRideFinish(handler: () => void) {
-        let handlers = getFinishHandlers();
-        if (!handlers) {
-            game.currentScene().data[FINISH_HANDLERS_KEY] = handlers = [];
-        }
-        handlers.push(handler);
+        game.addScenePushHandler(() => {
+            const scene = game.currentScene()
+            let handlers = scene.data[FINISH_HANDLERS_KEY] as (() => void)[]
+            if (!handlers) {
+                scene.data[FINISH_HANDLERS_KEY] = handlers = []
+            }
+            handlers.push(handler)
+        })
     }
 
     /**
@@ -262,22 +268,28 @@ namespace railCart {
     //% percent.defl=50
     //% group="Events"
     export function onRideProgress(percent: number, handler: () => void) {
-        let handlers = getProgressHandlers();
-        if (!handlers) {
-            game.currentScene().data[PROGRESS_HANDLERS_KEY] = handlers = [];
-        }
-        handlers.push(new ProgressHandler(percent, handler));
+        game.addScenePushHandler(() => {
+            const scene = game.currentScene()
+            let handlers = scene.data[PROGRESS_HANDLERS_KEY] as ProgressEvent[]
+            if (!handlers) {
+                scene.data[PROGRESS_HANDLERS_KEY] = handlers = []
+            }
+            handlers.push({ percent, handler, triggered: false })
+        })
     }
     //% block="on passenger added"
     ///% draggableParameters="reporter"
     //% group="Events"
     //% blockId=railcart_on_passenger_added
     export function onPassengerAdded(handler: () => void) {
-        let handlers = game.currentScene().data[PASSENGER_HANDLERS_KEY] as (() => void)[]
-        if (!handlers) {
-            game.currentScene().data[PASSENGER_HANDLERS_KEY] = handlers = []
-        }
-        handlers.push(handler)
+        game.addScenePushHandler(() => {
+            const scene = game.currentScene()
+            let handlers = scene.data[PASSENGER_HANDLERS_KEY] as (() => void)[]
+            if (!handlers) {
+                scene.data[PASSENGER_HANDLERS_KEY] = handlers = []
+            }
+            handlers.push(handler)
+        })
     }
    
 
@@ -300,11 +312,14 @@ namespace railCart {
     //% group="Events"
     //% blockId=railcart_on_resume
     export function onCartResumed(handler: () => void) {
-        let handlers = game.currentScene().data[RESUME_HANDLERS_KEY] as (() => void)[]
-        if (!handlers) {
-            game.currentScene().data[RESUME_HANDLERS_KEY] = handlers = []
-        }
-        handlers.push(handler)
+        game.addScenePushHandler(() => {
+            const scene = game.currentScene()
+            let handlers = scene.data[RESUME_HANDLERS_KEY] as (() => void)[]
+            if (!handlers) {
+                scene.data[RESUME_HANDLERS_KEY] = handlers = []
+            }
+            handlers.push(handler)
+        })
     }
 
 
@@ -314,12 +329,10 @@ namespace railCart {
     /**
      * Run code when cart reaches midpoint (50%)
      */
-    //% block="on cart midpoint reached %handler"
+    //% block="on cart midpoint reached"
     //% group="Events"
     //% blockId=railcart_on_midpoint
-    //% handler.shadow="procedures_callnoreturn"
-    //% blockAllowMultiple=1
-    //% weight=55
+    //% draggableParameters="reporter"
     export function onCartMidpoint(handler: () => void) {
         onRideProgress(50, handler)
     }
@@ -336,7 +349,7 @@ namespace railCart {
         return game.currentScene().data[FINISH_HANDLERS_KEY];
     }
 
-    function getProgressHandlers(): ProgressHandler[] {
+    function getProgressHandlers(): ProgressEvent[] {
         return game.currentScene().data[PROGRESS_HANDLERS_KEY];
     }
 
@@ -412,12 +425,12 @@ namespace railCart {
             p.x = cart.x
             p.y = cart.y - 4
         }
-        const handlers = getProgressHandlers();
+        const handlers = getProgressHandlers()
         if (handlers) {
             for (const h of handlers) {
                 if (!h.triggered && progress >= h.percent / 100) {
-                    h.triggered = true;
-                    h.handler();
+                    h.triggered = true
+                    h.handler()
                 }
             }
         }
@@ -433,12 +446,10 @@ namespace railCart {
         passengers = []
         fireRideFinish()
     }
-    class ProgressHandler {
-        constructor(
-            public percent: number,
-            public handler: () => void,
-            public triggered = false
-        ) { }
+    interface ProgressEvent {
+        percent: number
+        handler: () => void
+        triggered: boolean
     }
     // --- Effect Blocks ---
 
