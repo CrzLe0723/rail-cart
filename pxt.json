@@ -13,7 +13,8 @@
         "README.md",
         "assets.json",
         "RailCart.ts",
-        "docs/Advanced.md"
+        "docs/Advanced.md",
+        "docs/Ride.md"
     ],
     "testFiles": [
         "test.ts"
