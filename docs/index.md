@@ -12,5 +12,5 @@ The **RailCart** extension lets you create rail rides for sprites, add passenger
 - [Events](Events.md) – handle ride start, finish, progress, passengers  
 - [Effects](Effects.md) – shake cart, trails, colors  
 - [Utilities](Utilities.md) – position, speed, direction, progress  
-- [Advanced](Advanced.md) – raw velocity, teleport, force finish  
-- [Passengers](Passengers.md) – add/remove passengers, check if on cart
+- [Advanced](https://github.com/CrzLe0723/rail-cart/blob/master/docs/Advanced.md) – raw velocity, teleport, force finish  
+- [Passengers](docs/Passengers.md) – add/remove passengers, check if on cart
