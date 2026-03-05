@@ -19,8 +19,8 @@
         "docs/Passengers.md",
         "docs/Ride.md",
         "docs/Setup.md",
-        "docs/Utilities.md",
-        "index.md",
+        "Utilities.md",
+        "docs/index.md",
         "docs/blocks/start-ride.md"
     ],
     "testFiles": [
