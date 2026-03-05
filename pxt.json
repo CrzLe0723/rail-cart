@@ -1,5 +1,5 @@
 {
-    "name": "RailCart Extension",
+    "name": "rail-cart",
     "version": "0.0.1",
     "description": "Tile-based rail cart rides with easing, passengers, events, and customizable effects for MakeCode Arcade.",
     "dependencies": {
