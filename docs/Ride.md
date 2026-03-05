@@ -1,26 +1,53 @@
 # Ride Blocks
 
-These blocks let you control the cart ride.
+Ride blocks control how a rail cart moves along the map.
+They are used to start, pause, resume, and stop cart rides.
 
-## start rail ride
-**Block:** `start rail ride rider %rider cart %cartSprite from %from to %to`  
-Starts a ride from one tile to another. Locks the player to the cart and moves it along a path.
+Use these blocks to create:
+- Minecart systems
+- Cutscene-style movement
+- Automatic travel between areas
 
-## pause ride
-Pauses the ride temporarily. Does not release passengers.
+---
 
-## resume ride
+## Ride control blocks
+
+### [start rail ride](blocks/start-ride.md)
+
+Starts a rail cart ride from one tile to another.
+
+Use this block to begin any cart movement.
+It locks the rider to the cart and triggers ride events.
+
+---
+
+### [pause ride](blocks/pause-ride.md)
+
+Temporarily pauses the cart mid-ride.
+
+Useful for:
+- Dialogue
+- Timed events
+- Waiting for player input
+
+---
+
+### [resume ride](blocks/resume-ride.md)
+
 Resumes a paused ride.
 
-## stop cart immediately
-Stops the ride and releases the player.
+---
 
-## change ride destination
-**Block:** `change ride destination to %to`  
-Change the cart’s target tile mid-ride.
+### [stop cart immediately](blocks/stop-ride.md)
 
-## is cart paused
-Returns true if the ride is currently paused.
+Stops the cart and unlocks the rider immediately.
 
-## has cart ride finished
-Returns true if the ride is finished.
+---
+
+## Related event blocks
+
+These blocks let you run code automatically during a ride.
+
+- 🟢 [on rail ride start](blocks/on-ride-start.md)
+- 📊 [on rail ride progress](blocks/on-ride-progress.md)
+- 🏁 [on rail ride finished](blocks/on-ride-finish.md)
