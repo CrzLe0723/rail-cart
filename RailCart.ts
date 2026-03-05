@@ -128,6 +128,10 @@ namespace railCart {
     //% group="Ride"
     //% blockId=railcart_start_ride
     //% weight=100
+    //% rider.shadow="variables_get"
+    //% rider.defl="rider"
+    //% cartSprite.shadow="variables_get"
+    //% cartSprite.defl="cart"
     export function startRide(rider: Sprite, cartSprite: Sprite, from: tiles.Location, to: tiles.Location) {
         if (active) return
         player = rider
