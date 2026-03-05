@@ -821,6 +821,8 @@ namespace railCart {
     //% block="add passenger %p"
     //% group="Passengers"
     //% blockId=railcart_add_passenger
+    //% p.shadow="variables_get"
+    //% p.defl="passenger"
     export function addPassenger(p: Sprite) {
         passengers.push(p)
     }
@@ -861,6 +863,8 @@ namespace railCart {
     //% block="detach passenger %p"
     //% group="Passengers"
     //% blockId=railcart_detach_passenger
+    //% p.shadow="variables_get"
+    //% p.defl="passenger"
     export function detachPassenger(p: Sprite) {
         passengers = passengers.filter(ps => ps !== p)
     }
@@ -871,6 +875,8 @@ namespace railCart {
     //% block="teleport passenger %p to x $x y $y"
     //% group="Passengers"
     //% blockId=railcart_teleport_passenger
+    //% p.shadow="variables_get"
+    //% p.defl="passenger"
     export function teleportPassenger(p: Sprite, x: number, y: number) {
         p.setPosition(x, y)
     }
