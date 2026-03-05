@@ -30,7 +30,7 @@ To edit this repository in MakeCode.
 Handle tile-based rail cart rides in your MakeCode Arcade games.  
 Supports easing, passengers, events, sounds, effects, and advanced controls.
 
----
+
 
 ## Installation
 
