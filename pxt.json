@@ -1,7 +1,7 @@
 {
     "name": "RailCart Extension",
     "version": "0.0.1",
-    "description": "",
+    "description": "Tile-based rail cart rides with easing, passengers, events, and customizable effects for MakeCode Arcade.",
     "dependencies": {
         "device": "*",
         "Extra Effects": "github:alexszeto/extra-effects#v3.1.0",
@@ -14,7 +14,13 @@
         "assets.json",
         "RailCart.ts",
         "docs/Advanced.md",
-        "docs/Ride.md"
+        "docs/Effects.md",
+        "docs/Events.md",
+        "docs/Passengers.md",
+        "docs/Ride.md",
+        "docs/Setup.md",
+        "docs/Utilities.md",
+        "docs/index.md"
     ],
     "testFiles": [
         "test.ts"
