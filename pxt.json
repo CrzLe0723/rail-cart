@@ -20,7 +20,7 @@
         "docs/Ride.md",
         "docs/Setup.md",
         "docs/Utilities.md",
-        "docs/index.md",
+        "index.md",
         "docs/blocks/start-ride.md"
     ],
     "testFiles": [
