@@ -132,6 +132,8 @@ namespace railCart {
     //% rider.defl="rider"
     //% cartSprite.shadow="variables_get"
     //% cartSprite.defl="cart"
+    //% from.shadow="tiles_get_tile_location"
+    //% to.shadow="tiles_get_tile_location"
     export function startRide(rider: Sprite, cartSprite: Sprite, from: tiles.Location, to: tiles.Location) {
         if (active) return
         player = rider
