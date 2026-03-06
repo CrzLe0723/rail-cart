@@ -12,15 +12,8 @@
         "main.ts",
         "README.md",
         "assets.json",
-        "RailCart.ts",
-        "docs/Advanced.md",
-        "docs/Effects.md",
-        "docs/Events.md",
-        "docs/Passengers.md",
-        "docs/Ride.md",
-        "docs/Setup.md",
-        "docs/Utilities.md",
-        "docs/index.md",
+        "RailCart.ts"
+        
     ],
     "testFiles": [
         "test.ts"
