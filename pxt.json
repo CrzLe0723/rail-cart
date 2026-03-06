@@ -1,6 +1,6 @@
 {
     "name": "rail-cart",
-    "version": "0.0.1",
+    "version": "0.0.5",
     "description": "Tile-based rail cart rides with easing, passengers, events, and customizable effects for MakeCode Arcade.",
     "dependencies": {
         "device": "*",
@@ -12,7 +12,8 @@
         "main.ts",
         "README.md",
         "assets.json",
-        "RailCart.ts"
+        "RailCart.ts",
+        "docs/blocks/start-ride.md"
     ],
     "testFiles": [
         "test.ts"
