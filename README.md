@@ -3,7 +3,7 @@
 
 > Open this page at [https://crzle0723.github.io/rail-cart/](https://crzle0723.github.io/rail-cart/)
 ---
-LOL
+
 
 ## Use as Extension
 
