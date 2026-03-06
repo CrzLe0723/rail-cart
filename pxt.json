@@ -13,6 +13,7 @@
         "README.md",
         "assets.json",
         "RailCart.ts",
+        "docs",
         "docs/Advanced.md",
         "docs/Effects.md",
         "docs/Events.md",
