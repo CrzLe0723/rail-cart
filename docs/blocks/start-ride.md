@@ -12,7 +12,6 @@ When this block runs, the rail cart:
 - Locks the rider onto the cart
 - Applies speed and easing settings
 - Triggers ride events
-
 ---
 
 ## Requirements

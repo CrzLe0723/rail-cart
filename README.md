@@ -63,7 +63,7 @@ Supports easing, passengers, events, sounds, effects, and advanced controls.
 - **shake cart for %duration ms** – Shake the cart.  
 - **set trail effect %effect with vx %vx vy %vy for %time attach to sprite %onSprite** – Particle effects.
 
-### [Utilities]
+### Utilities
 - **ride progress percent** – Get progress of the ride.  
 - **time remaining on cart ride (ms)** – Estimated remaining time.  
 - **current cart speed** – Get the current speed.  
