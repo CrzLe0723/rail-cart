@@ -132,7 +132,7 @@ namespace railCart {
     //% rider.defl="rider"
     //% cartSprite.shadow="variables_get"
     //% cartSprite.defl="cart"
-    //% help=github:CrzLe0723/rail-cart/docs/blocks/start-ride
+    //% help=https://google.com
     export function startRide(rider: Sprite, cartSprite: Sprite, from: tiles.Location, to: tiles.Location) {
         if (active) return
         player = rider
