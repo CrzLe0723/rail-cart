@@ -274,7 +274,7 @@ namespace railCart {
     //% block="on rail ride progress %percent%"
     //% draggableParameters="reporter"
     //% percent.defl=50
-    //% advanced=true
+    //% subcategory="Advanced"
     export function onRideProgress(percent: number, handler: () => void) {
         game.addScenePushHandler(() => {
             const scene = game.currentScene()
@@ -467,6 +467,7 @@ namespace railCart {
     //% block="shake cart for %duration ms"
     //% group="Effects"
     //% duration.defl=500
+    //% duration.shadow=timePicker
     //% blockId=railcart_shake
     export function shakeCart(duration: number) {
         const originalX = cart.x
@@ -497,7 +498,8 @@ namespace railCart {
     */
     //% block="set trail effect %eType with vx %vx vy %vy for %time ms attach to sprite %onSprite||at x %x y %y"
     //% group="Effects"
-    //% vx.defl=0 vy.defl=0 time.defl=1000 onSprite.defl=true
+    //% vx.defl=0 vy.defl=0 time.defl=1000 time.shadow=timePicker
+    //% onSprite.defl=true
     //% expandableArgumentMode="toggle"
     //% x.shadow="math_number"
     //% y.shadow="math_number"
@@ -697,6 +699,9 @@ namespace railCart {
     //% block="boost cart by $amount for $duration ms"
     //% group="Utilities"
     //% blockId=railcart_temp_boost
+    //% amount.defl=50
+    //% duration.shadow=timePicker
+    //% duration.defl=80
     export function temporaryBoost(amount: number, duration: number) {
         baseSpeed += amount
         timer.after(duration, function () {
@@ -714,7 +719,7 @@ namespace railCart {
     //% block="force cart velocity vx $vx vy $vy"
     //% vx.defl=50 vy.defl=0
     //% weight=100
-    //% advanced=true
+    //% subcategory="Advanced"
     //% blockId=railcart_force_velocity
     export function forceVelocity(vx: number, vy: number) {
         if (!cart) return
@@ -728,7 +733,7 @@ namespace railCart {
     */
     //% block="restore normal cart movement"
     //% weight=95
-    //% advanced=true
+    //% subcategory="Advanced"
     //% blockId=railcart_restore_movement
     export function restoreMovement() {
         rawVelocityOverride = false
@@ -739,7 +744,7 @@ namespace railCart {
     */
     //% block="disable easing temporarily"
     //% weight=90
-    //% advanced=true
+    //% subcategory="Advanced"
     //% blockId=railcart_disable_easing
     export function disableEasing() {
         easingEnabled = false
@@ -750,7 +755,7 @@ namespace railCart {
     */
     //% block="enable easing"
     //% weight=85
-    //% advanced=true
+    //% subcategory="Advanced"
     //% blockId=railcart_enable_easing
     export function enableEasing() {
         easingEnabled = true
@@ -772,7 +777,7 @@ namespace railCart {
     //% block="force finish ride"
 
     //% weight=80
-    //% advanced=true
+    //% subcategory="Advanced"
     //% blockId=railcart_force_finish
     export function forceFinishRide() {
         if (!cart) return
@@ -793,7 +798,7 @@ namespace railCart {
     //% block="teleport cart to x $x y $y"
     //% x.defl=80 y.defl=60
     //% weight=70
-    //% advanced=true
+    //% subcategory="Advanced"
     //% blockId=railcart_teleport
     export function teleportCart(x: number, y: number) {
         if (!cart) return
@@ -805,7 +810,7 @@ namespace railCart {
     */
     //% block="raw velocity override active"
     //% weight=60
-    //% advanced=true
+    //% subcategory="Advanced"
     //% blockId=railcart_is_override
     export function isRawOverride(): boolean {
         return rawVelocityOverride
@@ -815,7 +820,7 @@ namespace railCart {
      * Get the active cart sprite
      */
     //% block="active cart sprite"
-    //% advanced=true
+    //% subcategory="Advanced"
     //% blockId=railcart_get_active_sprite
     export function getActiveCart(): Sprite {
         return cart
