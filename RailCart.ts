@@ -133,6 +133,8 @@ namespace railCart {
     //% cartSprite.shadow="variables_get"
     //% cartSprite.defl="cart"
     //% help=github:rail-cart/docs/blocks/start-ride
+    //% from.shadow="mapgettile"
+    //% to.shadow="mapgettile"
     export function startRide(rider: Sprite, cartSprite: Sprite, from: tiles.Location, to: tiles.Location) {
         if (active) return
         player = rider
@@ -224,6 +226,7 @@ namespace railCart {
     //% group="Ride"
     //% blockId=railcart_change_destination
     //% weight=98
+    //% to.shadow="mapgettile"
     export function changeDestination(to: tiles.Location) { end = to }
 
     // --- Event Blocks ---
