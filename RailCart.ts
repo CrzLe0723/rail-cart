@@ -69,7 +69,7 @@ namespace railCart {
      * Set the base and boost speed for the cart
      */
     //% block="set cart base speed $speed boost $boost"
-    //% group="Setup"
+    //% subcategory="Setup"
     //% speed.defl=0.8 boost.defl=5.5
     //% blockId=railcart_set_speed
     //% weight=100
@@ -82,7 +82,7 @@ namespace railCart {
      * Chooses how the cart accelerates/decelerates.
      */
     //% block="set easing type $type"
-    //% group="Setup"
+    //% subcategory="Setup"
     //% blockId=railcart_set_easing
     //% weight=95
     export function setEasing(type: EasingType) {
@@ -93,7 +93,7 @@ namespace railCart {
      * Returns true if the cart is currently moving
      */
     //% block="is cart currently moving"
-    //% group="Setup"
+    //% subcategory="Setup"
     //% blockId=railcart_is_active
     //% weight=85
     export function isActive(): boolean {
@@ -104,7 +104,7 @@ namespace railCart {
      * Sets a sound for the cart
      */
     //% block="set cart sound %sound"
-    //% group="Audio"
+    //% subcategory="Audio"
     //% blockId=railcart_set_sound
     export function setCartSound(sound: music.Playable) {
         music.play(sound, music.PlaybackMode.InBackground)
@@ -114,7 +114,7 @@ namespace railCart {
      * Makes the camera follow the cart
      */
     //% block="follow cart with camera"
-    //% group="Setup"
+    //% subcategory="Setup"
     //% blockId=railcart_follow_camera
     //% weight=90
     export function followCartCamera() { scene.cameraFollowSprite(cart) }
@@ -125,7 +125,7 @@ namespace railCart {
      * Starts a rail cart ride from one tile to another.
     */
     //% block="start rail ride rider %rider cart %cartSprite from %from to %to"
-    //% group="Ride"
+    //% subcategory="Ride"
     //% blockId=railcart_start_ride
     //% weight=100
     //% rider.shadow="variables_get"
@@ -169,7 +169,7 @@ namespace railCart {
      * Temporarily stops the cart mid-ride.
      */
     //% block="pause ride"
-    //% group="Ride"
+    //% subcategory="Ride"
     //% blockId=railcart_pause_ride
     //% weight=94
     export function pauseRide() {
@@ -182,7 +182,7 @@ namespace railCart {
      * Resumes the cart if paused.
      */
     //% block="resume ride"
-    //% group="Ride"
+    //% subcategory="Ride"
     //% blockId=railcart_resume_ride
     //% weight=96
     export function resumeRide() {
@@ -195,7 +195,7 @@ namespace railCart {
      * Immediately stops the cart and unlocks the player.
      */
     //% block="stop cart immediately"
-    //% group="Ride"
+    //% subcategory="Ride"
     //% blockId=railcart_stop_ride
     //% weight=92
     export function stopRide() { active = false }
@@ -204,7 +204,7 @@ namespace railCart {
      * Returns true if the ride has finished
      */
     //% block="cart ride finished?"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_has_finished
     export function hasRideFinished(): boolean {
         return !active && player !== null
@@ -214,7 +214,7 @@ namespace railCart {
      * Returns true if the ride is paused
      */
     //% block="is cart paused"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_is_paused
     export function isPaused(): boolean {
         return !active && player != null && distanceToDestination() > 0
@@ -223,7 +223,7 @@ namespace railCart {
      * Change the destination to another location
      */
     //% block="change ride destination to %to"
-    //% group="Ride"
+    //% subcategory="Ride"
     //% blockId=railcart_change_destination
     //% weight=98
     //% to.shadow="mapgettile"
@@ -237,7 +237,7 @@ namespace railCart {
     //% block="on rail ride start"
     //% blockId=railcart_on_ride_start
     //% draggableParameters="reporter"
-    //% group="Events"
+    //% subcategory="Events"
     export function onRideStart(handler: () => void) {
         game.addScenePushHandler(() => {
             const scene = game.currentScene()
@@ -255,7 +255,7 @@ namespace railCart {
     //% blockId=railcart_on_finish
     //% block="on rail ride finished"
     //% draggableParameters="reporter"
-    //% group="Events"
+    //% subcategory="Events"
     export function onRideFinish(handler: () => void) {
         game.addScenePushHandler(() => {
             const scene = game.currentScene()
@@ -287,7 +287,7 @@ namespace railCart {
     }
     //% block="on passenger added"
     ///% draggableParameters="reporter"
-    //% group="Events"
+    //% subcategory="Events"
     //% blockId=railcart_on_passenger_added
     export function onPassengerAdded(handler: () => void) {
         game.addScenePushHandler(() => {
@@ -303,7 +303,7 @@ namespace railCart {
 
     //% block="on cart paused"
     //% draggableParameters="reporter"
-    //% group="Events"
+    //% subcategory="Events"
     //% blockId=railcart_on_pause
     export function onCartPaused(handler: () => void) {
         game.addScenePushHandler(() => {
@@ -317,7 +317,7 @@ namespace railCart {
     
     //% block="on cart resumed"
     //% draggableParameters="reporter"
-    //% group="Events"
+    //% subcategory="Events"
     //% blockId=railcart_on_resume
     export function onCartResumed(handler: () => void) {
         game.addScenePushHandler(() => {
@@ -338,7 +338,7 @@ namespace railCart {
      * Run code when cart reaches midpoint (50%)
      */
     //% block="on cart midpoint reached"
-    //% group="Events"
+    //% subcategory="Events"
     //% blockId=railcart_on_midpoint
     //% draggableParameters="reporter"
     export function onCartMidpoint(handler: () => void) {
@@ -465,7 +465,7 @@ namespace railCart {
      * Shakes the cart for the specified duration
      */
     //% block="shake cart for %duration ms"
-    //% group="Effects"
+    //% subcategory="Effects"
     //% duration.defl=500
     //% duration.shadow=timePicker
     //% blockId=railcart_shake
@@ -497,7 +497,7 @@ namespace railCart {
     * @param y set the y position of the effect (optional)
     */
     //% block="set trail effect %eType with vx %vx vy %vy for %time ms attach to sprite %onSprite||at x %x y %y"
-    //% group="Effects"
+    //% subcategory="Effects"
     //% vx.defl=0 vy.defl=0 time.defl=1000 time.shadow=timePicker
     //% onSprite.defl=true
     //% expandableArgumentMode="toggle"
@@ -530,7 +530,7 @@ namespace railCart {
      * Clears any effects on the cart
     */
     //% block="clear any effect on cart"
-    //% group="Effects"
+    //% subcategory="Effects"
     //% blockId=railcart_clear_effects
     export function clearEffects() {
         effects.clearParticles(cart)
@@ -540,7 +540,7 @@ namespace railCart {
      * Set trail effect color (for Dust/Sparks/Steam)
      */
     //% block="set trail effect color $color"
-    //% group="Effects"
+    //% subcategory="Effects"
     //% blockId=railcart_trail_color
     export function setTrailColor(color: number) {
         effectColor = color
@@ -550,7 +550,7 @@ namespace railCart {
      * Make the trail effect loop continuously
      */
     //% block="loop trail effect $enabled"
-    //% group="Effects"
+    //% subcategory="Effects"
     //% blockId=railcart_loop_effect
     export function loopTrailEffect(enabled: boolean) {
         trailLoopEnabled = enabled
@@ -561,7 +561,7 @@ namespace railCart {
      * Gets the cart's current speed
      */
     //% block="current cart speed"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_get_speed
     export function getSpeed(): number { return baseSpeed + boostSpeed }
 
@@ -569,18 +569,18 @@ namespace railCart {
      * Reverses the cart's movement
      */
     //% block="reverse cart direction"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_reverse
     export function reverseCart() { [start, end] = [end, start] }
     //% block="cart x position"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_cart_x
     export function cartX(): number {
         return cart ? cart.x : 0
     }
 
     //% block="cart y position"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_cart_y
     export function cartY(): number {
         return cart ? cart.y : 0
@@ -590,7 +590,7 @@ namespace railCart {
      * Get the tile the cart is on
      */
     //% block="cart is on tile"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_get_tile
     export function getCartTile(): tiles.Location {
         return tiles.getTileLocation(Math.floor(cart.x / 16), Math.floor(cart.y / 16))
@@ -600,7 +600,7 @@ namespace railCart {
      * Get the distance to the destination
      */
     //% block="distance to ride destination"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_distance_to_end
     export function distanceToDestination(): number {
         if (!cart || !end) return 0
@@ -612,7 +612,7 @@ namespace railCart {
      * Gets the progress of the current rail ride in percent
     */
     //% block="ride progress percent"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_get_progress
     export function getProgress(): number {
         if (!active || !cart || !start || !end) return 0
@@ -638,7 +638,7 @@ namespace railCart {
      * Returns the estimated remaining time of the ride in milliseconds.
      */
     //% block="time remaining on cart ride (ms)"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_time_remaining
     export function timeRemaining(): number {
         if (!active) return 0
@@ -652,7 +652,7 @@ namespace railCart {
      * Set the cart's movement direction explicitly
      */
     //% block="set cart direction to $dir"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_set_direction
     export function setDirection(dir: CartDirection) {
         if (!cart) return
@@ -669,7 +669,7 @@ namespace railCart {
      * Returns the current cart direction
      */
     //% block="cart direction"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_get_direction
     export function getDirection(): CartDirection {
         return direction
@@ -681,7 +681,7 @@ namespace railCart {
      * Get the cart's base speed
      */
     //% block="cart base speed"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_get_base_speed
     export function getBaseSpeed(): number { return baseSpeed }
 
@@ -689,7 +689,7 @@ namespace railCart {
      * Get the cart's boost speed
      */
     //% block="cart boost speed"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_get_boost_speed
     export function getBoostSpeed(): number { return boostSpeed }
 
@@ -697,7 +697,7 @@ namespace railCart {
      * Temporarily boost the cart speed for a duration
      */
     //% block="boost cart by $amount for $duration ms"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% blockId=railcart_temp_boost
     //% amount.defl=50
     //% duration.shadow=timePicker
@@ -765,7 +765,7 @@ namespace railCart {
      * Returns true if easing is enabled
      */
     //% block="is cart easing enabled"
-    //% group="Utilities"
+    //% subcategory="Utilities"
     //% weight=50
     //% blockId=railcart_is_easing
     export function isEasingEnabled(): boolean {
@@ -832,7 +832,7 @@ namespace railCart {
      * Adds another sprite to ride the cart.
      */
     //% block="add passenger %p"
-    //% group="Passengers"
+    //% subcategory="Passengers"
     //% blockId=railcart_add_passenger
     //% p.shadow="variables_get"
     //% p.defl="passenger"
@@ -844,7 +844,7 @@ namespace railCart {
      * Returns true if there are passengers on the cart
      */
     //% block="cart has passengers"
-    //% group="Passengers"
+    //% subcategory="Passengers"
     //% blockId=railcart_has_passengers
     export function hasPassengers(): boolean {
         return passengers.length > 0
@@ -854,7 +854,7 @@ namespace railCart {
      * Get the passenger count
      */
     //% block="number of passengers on cart"
-    //% group="Passengers"
+    //% subcategory="Passengers"
     //% blockId=railcart_passenger_count
     export function passengerCount(): number {
         return passengers.length
@@ -864,7 +864,7 @@ namespace railCart {
      * Clear all passengers 
      */
     //% block="remove all passengers"
-    //% group="Passengers"
+    //% subcategory="Passengers"
     //% blockId=railcart_clear_passengers
     export function clearPassengers() {
         passengers = []
@@ -874,7 +874,7 @@ namespace railCart {
      * Detach a passenger from the cart
     */
     //% block="detach passenger %p"
-    //% group="Passengers"
+    //% subcategory="Passengers"
     //% blockId=railcart_detach_passenger
     //% p.shadow="variables_get"
     //% p.defl="passenger"
@@ -886,7 +886,7 @@ namespace railCart {
      * Teleport a passenger separately
     */
     //% block="teleport passenger %p to x $x y $y"
-    //% group="Passengers"
+    //% subcategory="Passengers"
     //% blockId=railcart_teleport_passenger
     //% p.shadow="variables_get"
     //% p.defl="passenger"
@@ -898,7 +898,7 @@ namespace railCart {
      * Check if a specific sprite is on the cart
     */
     //% block="is %p on the cart"
-    //% group="Passengers"
+    //% subcategory="Passengers"
     //% blockId=railcart_is_on_cart
     //% p.shadow="variables_get"
     //% p.defl="passenger"
