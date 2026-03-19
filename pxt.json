@@ -5,7 +5,8 @@
     "dependencies": {
         "device": "*",
         "Extra Effects": "github:alexszeto/extra-effects#v3.1.0",
-        "Timers": "github:microsoft/arcade-timers#v1.1.0"
+        "Timers": "github:microsoft/arcade-timers#v1.1.0",
+        "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.6.0"
     },
     "files": [
         "main.blocks",
