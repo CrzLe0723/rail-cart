@@ -104,8 +104,10 @@ namespace railCart {
      * Sets a sound for the cart
      */
     //% block="set cart sound %sound"
+    //% sound.shadow="music_create_sound_effect"
     //% subcategory="Audio"
     //% blockId=railcart_set_sound
+    
     export function setCartSound(sound: music.Playable) {
         music.play(sound, music.PlaybackMode.InBackground)
     }
