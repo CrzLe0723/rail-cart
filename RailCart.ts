@@ -120,7 +120,7 @@ namespace railCart {
     //% blockId=railcart_follow_camera
     //% weight=90
     export function followCartCamera() { scene.cameraFollowSprite(cart) }
-
+    
 
     // --- Ride Blocks ---
     /**
@@ -465,6 +465,7 @@ namespace railCart {
 
     /**
      * Shakes the cart for the specified duration
+     * @param duration how long to shake the cart for
      */
     //% block="shake cart for %duration ms"
     //% subcategory="Effects"
@@ -487,6 +488,10 @@ namespace railCart {
             elapsed += 50
         })
     }
+
+    
+     
+     
 
     /**
     * Creates a trail effect (dust, sparks, steam) behind the cart.
@@ -840,6 +845,7 @@ namespace railCart {
     //% p.defl="passenger"
     export function addPassenger(p: Sprite) {
         passengers.push(p)
+        firePassengerAdded()
     }
 
     /**
