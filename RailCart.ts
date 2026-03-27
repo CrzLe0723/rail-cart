@@ -7,6 +7,12 @@ namespace railCart {
     let cart: Sprite = null
     let start: tiles.Location = null
     let end: tiles.Location = null
+    let path: tiles.Location[] = []
+    let currentNode = 0
+    let pathMode = false
+    let segmentStart: tiles.Location = null
+    let segmentEnd: tiles.Location = null
+    let segmentDist = 0
     let totalDist = 0
     let baseSpeed = 0.8
     let boostSpeed = 5.5
@@ -164,7 +170,47 @@ namespace railCart {
         fireRideStart()
 
     }
+    /**
+     * Starts a rail ride through multiple points
+     */
+    //% block="start rail path ride rider %rider cart %cartSprite through %path"
+    //% subcategory="Ride"
+    //% blockId=railcart_start_path_ride
+    //% pathInput.shadow="lists_create_with" pathInput.defl="colorindexpicker"
+    //% pathInput.defl="mapgettile"
+    //% weight=99
+    export function startPathRide(rider: Sprite, cartSprite: Sprite, pathInput: tiles.Location[]) {
+        if (!pathInput || pathInput.length < 2) return
 
+        player = rider
+        cart = cartSprite
+        path = pathInput
+        currentNode = 0
+        pathMode = true
+
+        passengers = []
+
+        segmentStart = path[0]
+        segmentEnd = path[1]
+
+        let s = tileCenter(segmentStart)
+
+        cart.setPosition(s.x, s.y)
+        cart.setFlag(SpriteFlag.GhostThroughWalls, true)
+
+        // Lock player
+        player.ay = 0
+        controller.moveSprite(player, 0, 0)
+        player.x = cart.x
+        player.y = cart.y - 4
+
+        segmentDist = spriteutils.distanceBetween(segmentStart, segmentEnd)
+
+        active = true
+        startTime = game.runtime()
+        resetProgressEvents()
+        fireRideStart()
+    }
     /**
      * Temporarily stops the cart mid-ride.
      */
