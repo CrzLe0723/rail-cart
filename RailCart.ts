@@ -176,8 +176,7 @@ namespace railCart {
     //% block="start rail path ride rider %rider cart %cartSprite through %path"
     //% subcategory="Ride"
     //% blockId=railcart_start_path_ride
-    //% pathInput.shadow="lists_create_with" pathInput.defl="colorindexpicker"
-    //% pathInput.defl="mapgettile"
+    //% pathInput.shadow="lists_create_with" pathInput.defl="mapgettile"
     //% weight=99
     export function startPathRide(rider: Sprite, cartSprite: Sprite, pathInput: tiles.Location[]) {
         if (!pathInput || pathInput.length < 2) return
