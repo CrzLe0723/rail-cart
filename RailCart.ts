@@ -173,10 +173,13 @@ namespace railCart {
     /**
      * Starts a rail ride through multiple points
      */
-    //% block="start rail path ride rider %rider cart %cartSprite through %path"
+    //% block="start rail path ride rider %rider cart %cartSprite through %pathInput"
+    
     //% subcategory="Ride"
     //% blockId=railcart_start_path_ride
-    //% pathInput.shadow="lists_create_with" pathInput.defl="[tiles.getTileLocation(0, 0), tiles.getTileLocation(0, 0), tiles.getTileLocation(0, 0)]"
+    //% pathInput.shadow="lists_create_with"
+    //% pathInput.defl="tile_get_tile_location"
+    //% pathInput.shadowOptions="tiles_location"
     //% weight=99
     //% rider.shadow="variables_get"
     //% rider.defl="rider"
@@ -213,6 +216,16 @@ namespace railCart {
         startTime = game.runtime()
         resetProgressEvents()
         fireRideStart()
+    }
+    /**
+     * Gets a tile location for path building
+     */
+    //% block="tile location at $col $row"
+    //% blockId=railcart_tile_location
+    //% subcategory="Ride"
+    //% weight=5
+    export function railTileLocation(col: number, row: number): tiles.Location {
+        return tiles.getTileLocation(col, row)
     }
     /**
      * Temporarily stops the cart mid-ride.
