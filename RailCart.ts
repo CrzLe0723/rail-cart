@@ -2,6 +2,9 @@
 //% weight=90 color=#444444 icon="\uf238" groups='["Ride","Setup","Events","Effects","Utilities","Audio","Passengers","Advanced"]'
 namespace railCart {
     // --- Internal state ---
+    let networks: RailNetwork[] = []
+    let activeNetwork: RailNetwork = null
+    let currentRouteId = ""
     let active = false
     let player: Sprite = null
     let cart: Sprite = null
@@ -68,9 +71,197 @@ namespace railCart {
         Backward
     }
     let direction: CartDirection = CartDirection.Forward
+    //--- rail-network---
+    interface RailNetwork {
+        id: string
+        stations: tiles.Location[]
+        routes: RailRoute[]
+    }
 
+    interface RailRoute {
+        id: string
+        path: tiles.Location[]
+        loop: boolean
+    }
     // --- Setup Blocks ---
+    /**
+     * Creates a rail network
+     */
+    //% block="create rail network $id"
+    //% subcategory="Setup"
+    //% blockId=railcart_create_network
+    export function createNetwork(id: string): RailNetwork {
+        let net: RailNetwork = {
+            id: id,
+            stations: [],
+            routes: []
+        }
 
+        networks.push(net)
+        activeNetwork = net
+        return net
+    }
+    /**
+     * Add a station to the active network
+     */
+    //% block="add station at %tile to network"
+    //% subcategory="Ride"
+    //% blockId=railcart_add_station
+    //% tile.shadow="mapgettile"
+    export function addStation(tile: tiles.Location) {
+        if (!activeNetwork) return
+        activeNetwork.stations.push(tile)
+    }
+    /**
+     * Create a route in the active network
+     */
+    //% block="add route $id through %path"
+    //% subcategory="Ride"
+    //% blockId=railcart_add_route
+    //% path.shadow="lists_create_with"
+    export function addRoute(id: string, path: tiles.Location[], loop: boolean) {
+        if (!activeNetwork || path.length < 2) return
+
+        let route: RailRoute = {
+            id: id,
+            path: path,
+            loop: loop
+        }
+
+        activeNetwork.routes.push(route)
+    }
+    /**
+     * Start ride using a network route
+     */
+    //% block="start network ride rider %rider cart %cartSprite network $networkId route $routeId"
+    //% subcategory="Ride"
+    //% blockId=railcart_start_network_ride
+    export function startNetworkRide(rider: Sprite, cartSprite: Sprite, networkId: string, routeId: string) {
+
+        let net = networks.find(n => n.id == networkId)
+        if (!net) return
+
+        let route = net.routes.find(r => r.id == routeId)
+        if (!route) return
+
+        player = rider
+        cart = cartSprite
+
+        path = route.path
+        currentNode = 0
+        pathMode = true
+        activeNetwork = net
+        currentRouteId = routeId
+
+        segmentStart = path[0]
+        segmentEnd = path[1]
+
+        let s = tileCenter(segmentStart)
+
+        cart.setPosition(s.x, s.y)
+        cart.setFlag(SpriteFlag.GhostThroughWalls, true)
+
+        player.ay = 0
+        controller.moveSprite(player, 0, 0)
+        player.x = cart.x
+        player.y = cart.y - 4
+
+        segmentDist = spriteutils.distanceBetween(segmentStart, segmentEnd)
+
+        active = true
+        startTime = game.runtime()
+
+        resetProgressEvents()
+        fireRideStart()
+    }
+    /**
+     * Remove a rail network by id
+     */
+    //% block="remove rail network $id"
+    //% subcategory="Setup"
+    //% blockId=railcart_remove_network
+    export function removeNetwork(id: string) {
+        networks = networks.filter(n => n.id != id)
+
+        if (activeNetwork && activeNetwork.id == id) {
+            activeNetwork = null
+            path = []
+            pathMode = false
+            currentNode = 0
+        }
+    }
+    /**
+     * Remove all rail networks
+     */
+    //% block="clear all rail networks"
+    //% subcategory="Setup"
+    //% blockId=railcart_clear_networks
+    export function clearNetworks() {
+        networks = []
+        activeNetwork = null
+
+        path = []
+        pathMode = false
+        currentNode = 0
+    }
+    /**
+     * Check if a network exists
+     */
+    //% block="network $id exists"
+    //% subcategory="Utilities"
+    //% blockId=railcart_network_exists
+    export function networkExists(id: string): boolean {
+        return networks.some(n => n.id == id)
+    }
+    /**
+     * Set the active network
+     */
+    //% block="set active network $id"
+    //% subcategory="Setup"
+    //% blockId=railcart_set_active_network
+    export function setActiveNetwork(id: string) {
+        let net = networks.find(n => n.id == id)
+        if (net) activeNetwork = net
+    }
+    /**
+     * Switch to another route in same network
+     */
+    //% block="switch to route $routeId"
+    //% subcategory="Ride"
+    //% blockId=railcart_switch_route
+    export function switchRoute(routeId: string) {
+        if (!activeNetwork) return
+
+        let route = activeNetwork.routes.find(r => r.id == routeId)
+        if (!route) return
+
+        path = route.path
+        currentNode = 0
+        segmentStart = path[0]
+        segmentEnd = path[1]
+    }
+    /**
+     * Find nearest station in network
+     */
+    //% block="nearest station"
+    //% subcategory="Utilities"
+    //% blockId=railcart_nearest_station
+    export function nearestStation(): tiles.Location {
+        if (!activeNetwork || !cart) return null
+
+        let best = activeNetwork.stations[0]
+        let bestDist = 999999
+
+        for (let s of activeNetwork.stations) {
+            let d = spriteutils.distanceBetween(getCartTile(), s)
+            if (d < bestDist) {
+                bestDist = d
+                best = s
+            }
+        }
+
+        return best
+    }
     /**
      * Set the base and boost speed for the cart
      */
@@ -516,7 +707,14 @@ namespace railCart {
         path = []
         currentNode = 0
 
-        tiles.placeOnTile(player, pathMode ? segmentEnd : end)
+        let finalTile = pathMode ? segmentEnd : end
+
+        active = false
+        pathMode = false
+        path = []
+        currentNode = 0
+
+        tiles.placeOnTile(player, finalTile)
 
         player.ay = 500
         controller.moveSprite(player, 75, 0)
