@@ -3,8 +3,10 @@
 namespace railCart {
     // --- Internal state ---
     let networks: RailNetwork[] = []
+    let switches: RailSwitch[] = []
     let activeNetwork: RailNetwork = null
     let currentRouteId = ""
+    let lastSwitchTile: tiles.Location = null
     let active = false
     let player: Sprite = null
     let cart: Sprite = null
@@ -83,7 +85,56 @@ namespace railCart {
         path: tiles.Location[]
         loop: boolean
     }
+    interface RailSwitch {
+        tile: tiles.Location
+        routes: string[] // route IDs it can switch to
+        activeRouteIndex: number
+    }
     // --- Setup Blocks ---
+    /**
+     * Add a rail switch at a tile
+     */
+    //% block="add switch at %tile routes %routes"
+    //% subcategory="Ride"
+    //% blockId=railcart_add_switch
+    //% tile.shadow="mapgettile"
+    //% routes.shadow="lists_create_with"
+    export function addSwitch(tile: tiles.Location, routes: string[]) {
+        switches.push({
+            tile: tile,
+            routes: routes,
+            activeRouteIndex: 0
+        })
+    }
+    /**
+     * Toggle switch route
+     */
+    //% block="toggle switch at %tile"
+    //% subcategory="Ride"
+    //% blockId=railcart_toggle_switch
+    //% tile.shadow="mapgettile"
+    export function toggleSwitch(tile: tiles.Location) {
+        let sw = switches.find(s => sameTile(s.tile, tile))
+        if (!sw) return
+
+        sw.activeRouteIndex = (sw.activeRouteIndex + 1) % sw.routes.length
+    }
+    function sameTile(a: tiles.Location, b: tiles.Location): boolean {
+        return a.col == b.col && a.row == b.row
+    }
+    /**
+     * Set switch route manually
+     */
+    //% block="set switch at %tile to route index $index"
+    //% subcategory="Ride"
+    //% blockId=railcart_set_switch
+    //% tile.shadow="mapgettile"
+    export function setSwitch(tile: tiles.Location, index: number) {
+        let sw = switches.find(s => sameTile(s.tile, tile))
+        if (!sw) return
+
+        sw.activeRouteIndex = Math.max(0, Math.min(index, sw.routes.length - 1))
+    }
     /**
      * Creates a rail network
      */
@@ -507,7 +558,15 @@ namespace railCart {
             handlers.push(handler)
         })
     }
-
+    /**
+     * Run the code when a switch in the ride happens
+     */
+    //% block="on cart hits switch"
+    //% subcategory="Events"
+    //% blockId=railcart_on_switch
+    export function onSwitch(handler: () => void) {
+        // store handler like others
+    }
     /**
      * Run the code when the ride finishes.
     */
@@ -699,6 +758,32 @@ namespace railCart {
                     h.triggered = true
                     h.handler()
                 }
+            }
+        }
+        if (pathMode) {
+            let cartTile = getCartTile()
+
+            if (!lastSwitchTile || !sameTile(cartTile, lastSwitchTile)) {
+
+                for (let sw of switches) {
+                    if (sameTile(cartTile, sw.tile)) {
+
+                        lastSwitchTile = cartTile
+
+                        let routeId = sw.routes[sw.activeRouteIndex]
+                        let route = activeNetwork.routes.find(r => r.id == routeId)
+
+                        if (route) {
+                            path = route.path
+                            currentNode = 0
+                            segmentStart = path[0]
+                            segmentEnd = path[1]
+                        }
+
+                        break
+                    }
+                }
+
             }
         }
     })
