@@ -178,8 +178,6 @@ namespace railCart {
     //% subcategory="Ride"
     //% blockId=railcart_start_path_ride
     //% pathInput.shadow="lists_create_with"
-    //% pathInput.defl="tile_get_tile_location"
-    //% pathInput.shadowOptions="tiles_location"
     //% weight=99
     //% rider.shadow="variables_get"
     //% rider.defl="rider"
