@@ -287,7 +287,13 @@ namespace railCart {
     //% blockId=railcart_change_destination
     //% weight=98
     //% to.shadow="mapgettile"
-    export function changeDestination(to: tiles.Location) { end = to }
+    export function changeDestination(to: tiles.Location) {
+        if (pathMode) {
+            path[path.length - 1] = to
+        } else {
+            end = to
+        }
+    }
 
     // --- Event Blocks ---
 
@@ -506,12 +512,19 @@ namespace railCart {
 
     function finishRide() {
         active = false
-        tiles.placeOnTile(player, end)
+        pathMode = false
+        path = []
+        currentNode = 0
+
+        tiles.placeOnTile(player, pathMode ? segmentEnd : end)
+
         player.ay = 500
         controller.moveSprite(player, 75, 0)
+
         rawVelocityOverride = false
         easingEnabled = true
         passengers = []
+
         fireRideFinish()
     }
     interface ProgressEvent {
@@ -636,7 +649,16 @@ namespace railCart {
     //% block="reverse cart direction"
     //% subcategory="Utilities"
     //% blockId=railcart_reverse
-    export function reverseCart() { [start, end] = [end, start] }
+    export function reverseCart() {
+        if (pathMode) {
+            path.reverse()
+            currentNode = 0
+            segmentStart = path[0]
+            segmentEnd = path[1]
+        } else {
+            [start, end] = [end, start]
+        }
+    }
     //% block="cart x position"
     //% subcategory="Utilities"
     //% blockId=railcart_cart_x
@@ -668,7 +690,25 @@ namespace railCart {
     //% subcategory="Utilities"
     //% blockId=railcart_distance_to_end
     export function distanceToDestination(): number {
-        if (!cart || !end) return 0
+        if (!cart) return 0
+
+        if (pathMode) {
+            let dist = 0
+
+            let current = tileCenter(getCartTile())
+            let next = tileCenter(segmentEnd)
+
+            dist += Math.sqrt((next.x - current.x) ** 2 + (next.y - current.y) ** 2)
+
+            for (let i = currentNode + 1; i < path.length - 1; i++) {
+                dist += spriteutils.distanceBetween(path[i], path[i + 1])
+            }
+
+            return dist
+        }
+
+        if (!end) return 0
+
         let dx = tileCenter(end).x - cart.x
         let dy = tileCenter(end).y - cart.y
         return Math.sqrt(dx * dx + dy * dy)
