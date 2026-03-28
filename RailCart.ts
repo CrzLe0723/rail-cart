@@ -136,6 +136,8 @@ namespace railCart {
     //% block="start network ride rider %rider cart %cartSprite network $networkId route $routeId"
     //% subcategory="Ride"
     //% blockId=railcart_start_network_ride
+    //% rider.shadow=variables_get rider.defl=rider
+    //% cartSprite.shadow=variables_get cartSprite.defl=cart
     export function startNetworkRide(rider: Sprite, cartSprite: Sprite, networkId: string, routeId: string) {
 
         let net = networks.find(n => n.id == networkId)
